@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id = "facility_1" model="property.facility">
+        <field name="name"> Jogging Track</field>
+        </record>
+    <record id ="facility_2" model="property.facility">
+        <field name="name"> Parking</field>
+    </record>
+    <record id ="facility_3" model="property.facility">
+        <field name="name"> Garden</field>
+    </record>
+</odoo>

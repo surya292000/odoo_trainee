@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="property_rented_lease_lines_view_list" model="ir.ui.view">
+        <field name="name">property.rented.lease.lines.view.list</field>
+        <field name="model">property.rental.lease.lines</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="property_id" string ="property_1"/>
+                <field name="rental_id" string="Property"/>
+                <field name="amount" string="Amount" />
+                <field name="quantity" string="Quantity"/>
+                <field name="invoiced_quantity" string="Invoiced quantity"/>
+                <field name="order_line_ids" string="Ordered lines"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="property_rented_lease_lines_view_form" model="ir.ui.view">
+        <field name="name">property.rented.lease.lines.view.form</field>
+        <field name="model">property.rental.lease.lines</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="property_id" string ="property_1" />
+                <field name="rental_id" string="Property"/>
+                <field name="amount" string="Amount"/>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id="menu_example_root" name="Example" sequence="1"/>
+    <menuitem id="menu_example_one" name="example"
+              parent="menu_example_root"  action="action_example" sequence="2">
+    </menuitem>
+    <menuitem id="menu_example_tag" name="Example Tags"
+              parent="menu_example_root"  action="action_example_tag" sequence="3">
+    </menuitem>
+    <menuitem id="menu_example_line" name="Example Line"
+              parent="menu_example_root"  action="action_example_line" sequence="3">
+    </menuitem>
+
+</odoo>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="tag_new" model="example.tag">
+        <field name="name">NEW</field>
+    </record>
+</odoo>

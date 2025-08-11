@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rental_lease_details_view_list" model="ir.ui.view">
+        <field name="name">rental.lease.details.view.list</field>
+        <field name="model">property.rental.lease</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="rental_type"/>
+                <field name="tenant_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="rental_lease_details_view_form" model="ir.ui.view">
+        <field name="name">rental.lease.details.view.form</field>
+        <field name="model">property.rental.lease</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="states" widget="statusbar"
+                           statusbar_visible="Draft,Confirmed,Closed,Returned,Expired"/>
+                    <button name="action_create_invoice" type="object" string="Create Invoice" class="btn-primary"
+                            invisible="states != 'Confirmed'">
+                    </button>
+                    <button name="action_do_draft" type="object" string="Draft" invisible="states!='Confirmed'"/>
+                    <button name="action_do_confirm" type="object" string="Confirm"
+                            invisible="states == 'Confirmed'"/>
+                    <button name="action_do_close" type="object" string="Close" invisible="states == 'Draft'"/>
+                    <button name="action_do_return" type="object" string="Return" invisible="states == 'Returned'"/>
+                    <button name="action_do_expire" type="object" string="Expire" invisible="states == 'Expired'"/>
+                </header>
+                <sheet>
+                    <div name="button_box" position="inside">
+                        <button class="oe_stat_button" type="object" name="action_view_invoices" icon="fa-file-text-o"
+                                string="Invoices">
+                            <field string="Invoices" name="invoice_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <widget name="web_ribbon" title="Paid" bg_color="text-bg-success" invisible="invoice_status != 'paid'"/>
+                    <widget name="web_ribbon" title="To Invoice" invisible="invoice_status != 'to_invoice'"/>
+                    <widget name="web_ribbon" title="Partially Paid" invisible="invoice_status != 'partially_paid'"/>
+                    <group>
+                        <group>
+                            <field name="tenant_id" readonly="states in 'Confirmed'"/>
+                            <field name="rental_type" readonly="states in 'Confirmed'"/>
+                            <field name="price" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_days"/>
+                            <field name="total_amount"/>
+                            <field name="end_date" invisible="1"/>
+                            <field name="start_date" string="Date" widget="daterange" options="{'end_date_field': 'end_date'}"/>
+                            <field name="company_id" readonly="states in 'Confirmed'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page>
+                            <field name="property_ids" readonly="states in 'Confirmed'">
+                                <list editable="bottom">
+                                    <field name="property_id"/>
+                                    <field name="quantity" readonly="0"/>
+                                    <field name="invoiced_quantity"/>
+                                    <field name="amount" readonly="0"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <chatter>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </chatter>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="rental_lease_details_action" model="ir.actions.act_window">
+        <field name="name">Rental/Lease Management</field>
+        <field name="res_model">property.rental.lease</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">empty</p>
+        </field>
+    </record>
+
+    <record id="rental_lease_view_search" model="ir.ui.view">
+        <field name="name">rental.lease.view.search</field>
+        <field name="model">property.rental.lease</field>
+        <field name="arch" type="xml">
+            <search string="Tests">
+                <group expand="1" string="Group By">
+                    <filter string="Type" name="rental_type"
+                            context="{'group_by':'rental_type', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
