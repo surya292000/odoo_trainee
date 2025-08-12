@@ -12,7 +12,6 @@
         <field name="legal_amount">1000</field>
         <field name="built_date">2010-01-01</field>
         <field name="rent">150</field>
-
     </record>
     <record id="Property_2" model="property.details">
         <field name="name">Villa</field>

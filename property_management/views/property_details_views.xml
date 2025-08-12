@@ -94,6 +94,10 @@
         <field name="name">Property</field>
         <field name="res_model">property.details</field>
         <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[Command.clear(),
+            Command.create({'view_mode': 'list', 'sequence': 1, 'view_id': ref('property_details_view_list')}),
+            Command.create({'view_mode': 'form', 'sequence': 2, 'view_id': ref('property_details_view_form')}),
+        ]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">empty</p>
         </field>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api
+from odoo import fields, models
+
 
 class PropertyDetails(models.Model):
     _name = "property.details"
@@ -14,28 +15,18 @@ class PropertyDetails(models.Model):
     built_date = fields.Date(string="Build Date")
     legal_amount = fields.Float(string="Legal Amount")
     rent = fields.Integer(string="Rent")
-    owner_id = fields.Many2one("res.partner", string="Owner", default=lambda self: self.env.user.partner_id)
+    owner_id = fields.Many2one("res.partner", string="Owner")
     property_image = fields.Binary(store=True)
     description = fields.Text(string="Description")
     can_be_sold = fields.Boolean(string="Can be sold")
     facilities_ids = fields.Many2many("property.facility", string="Facilities")
-    rent_count = fields.Integer(String="Rent count", compute="compute_rent_count", default=0)
+    rent_count = fields.Integer(String="Rent count", compute="_compute_rent_count", default=0)
     states = fields.Selection([('Draft', 'Draft'), ('Rented', 'Rented'), ('Leased', 'Leased'),
                                ('Sold', 'Sold')],
                               string='State', required=True, default='Draft')
     property_rental_lease_id = fields.Many2one("property.rental.lease", string="state of rent or lease")
 
-    def action_get_rent_count(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Rental Leases',
-            'view_mode': 'list,form',
-            'res_model': 'property.rental.lease',
-            'domain': [('property_ids.property_id', '=', self.id)],
-            'context': {'create': False}
-        }
-    def compute_rent_count(self):
+    def _compute_rent_count(self):
         for record in self:
             record.rent_count = self.env['property.rental.lease'].search_count([('property_ids.property_id', '=', self.id)])
 
@@ -49,3 +40,14 @@ class PropertyDetails(models.Model):
             if not remaining_lines:
                 parent_lease.unlink()
         return super().unlink()
+
+    def action_get_rent_count(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Rental Leases',
+            'view_mode': 'list,form',
+            'res_model': 'property.rental.lease',
+            'domain': [('property_ids.property_id', '=', self.id)],
+            'context': {'create': False}
+        }
