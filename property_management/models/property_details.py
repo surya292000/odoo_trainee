@@ -28,7 +28,8 @@ class PropertyDetails(models.Model):
 
     def _compute_rent_count(self):
         for record in self:
-            record.rent_count = self.env['property.rental.lease'].search_count([('property_ids.property_id', '=', self.id)])
+            record.rent_count = self.env['property.rental.lease'].search_count(
+                [('property_ids.property_id', '=', self.id)])
 
     def unlink(self):
         order_line = self.env['property.rental.lease.lines']

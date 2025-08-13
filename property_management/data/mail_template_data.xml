@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="email_template_lease_expiry" model="mail.template">
+        <field name="name">Lease Expiry Notification</field>
+        <field name="model_id" ref="property_management.model_property_rental_lease"/>
+        <field name="subject">Lease Expiry Notice - {{ object.name }}</field>
+        <field name="email_to">{{ object.tenant_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 20px;">
+                <p>Dear <t t-out="object.tenant_id.name"/>,
+                </p>
+                <p>This is to inform you that your lease agreement is expired.</p>
+                <p>Your rental
+                    <t t-out="object.name"/>
+                    starting from
+                    <t t-out="object.start_date"/>
+                    to
+                    <t t-out="object.end_date"/>
+                    amounting in
+                    <t t-out="object.price"/>
+                    has been expired.
+                </p>
+                <p>Do not hesitate to contact us if you have any questions.</p>
+                <p>Thank you,
+                    <br/>
+                    <t t-out="user.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="email_template_lease_closing" model="mail.template">
+        <field name="name">Lease Expiry Notification</field>
+        <field name="model_id" ref="property_management.model_property_rental_lease"/>
+        <field name="subject">Lease Expiry Notice - {{ object.name }}</field>
+        <field name="email_to">{{ object.tenant_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 20px;">
+                <p>Dear <t t-out="object.tenant_id.name"/>,
+                </p>
+
+                <p>This is to inform you that your lease agreement is confirmed.</p>
+                <p>Your rental
+                    <t t-out="object.name"/>
+                    starting from
+                    <t t-out="object.start_date"/>
+                    to
+                    <t t-out="object.end_date"/>
+                    amounting in
+                    <t t-out="object.price"/>
+                    has been closed.
+                </p>
+                <p>Do not hesitate to contact us if you have any questions.</p>
+                <p>Thank you,
+                    <br/>
+                    <t t-out="user.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="email_template_lease_confirmed" model="mail.template">
+        <field name="name">Lease Expiry Notification</field>
+        <field name="model_id" ref="property_management.model_property_rental_lease"/>
+        <field name="subject">Lease Expiry Notice - {{ object.name }}</field>
+        <field name="email_to">{{ object.tenant_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 20px;">
+                <p>Dear <t t-out="object.tenant_id.name"/>,
+                </p>
+
+                <p>This is to inform you that your lease agreement is confirmed.</p>
+                <p>Your rental
+                    <t t-out="object.name"/>
+                    starting from
+                    <t t-out="object.start_date"/>
+                    to
+                    <t t-out="object.end_date"/>
+                    amounting in
+                    <t t-out="object.price"/>
+                    has been confirmed.
+                </p>
+                <p>Do not hesitate to contact us if you have any questions.</p>
+                <p>Thank you,
+                    <br/>
+                    <t t-out="user.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+    <record id="email_template_lease_confirmed" model="mail.template">
+        <field name="name">Lease Expiry Notification</field>
+        <field name="model_id" ref="property_management.model_property_rental_lease"/>
+        <field name="subject">Lease Expiry Notice - {{ object.name }}</field>
+        <field name="email_to">{{ object.tenant_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 20px;">
+                <p>Dear <t t-out="object.tenant_id.name"/>,
+                </p>
+                <p>This is to inform you that your lease agreement is confirmed.</p>
+                <p>Your rental
+                    <t t-out="object.name"/>
+                    starting from
+                    <t t-out="object.start_date"/>
+                    to
+                    <t t-out="object.end_date"/>
+                    amounting in
+                    <t t-out="object.price"/>
+                    has been confirmed.
+                </p>
+                <p>Do not hesitate to contact us if you have any questions.</p>
+                <p>Thank you,
+                    <br/>
+                    <t t-out="user.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+    <record id="email_template_late_payment" model="mail.template">
+        <field name="name">Rent Late Payment Notification</field>
+        <field name="model_id" ref="property_management.model_property_rental_lease"/>
+        <field name="subject">Rent Late Payment Notice - {{ object.name }}</field>
+        <field name="email_to">{{ object.tenant_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 20px; font-family: Arial, sans-serif;">
+                <p>Dear <t t-out="object.tenant_id.name"/>,
+                </p>
+                <p>This is to inform you that your lease agreement payment is overdue.</p>
+                <p>We are following up on rental
+                    <t t-out="object.name"/>
+                    which was on due
+                    <t t-out="object.payment_due_date"/>.
+                    The outstanding amount is
+                    <t t-out="object.price"/>.
+                </p>
+                <p>Make sure to pay the amount immediately.</p>
+                <p>Thank you,
+                    <br/>
+                    <t t-out="user.name"/>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

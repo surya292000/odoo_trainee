@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-<data noupdate="1">
-    <record id="seq_rental_management" model="ir.sequence">
-           <field name="name">Property Reference Numbers</field>
-           <field name="code">property.rental</field>
-           <field name="prefix">RNT</field>
-           <field name="padding">5</field>
-           <field name="company_id" eval="False"/>
-       </record>
-   </data>
+    <data noupdate="1">
+        <record id="seq_rental_management" model="ir.sequence">
+            <field name="name">Property Reference Numbers</field>
+            <field name="code">property.rental</field>
+            <field name="prefix">RNT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
 </odoo>

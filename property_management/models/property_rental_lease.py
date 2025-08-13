@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError
 
@@ -17,6 +18,7 @@ class PropertyRentalLease(models.Model):
     price = fields.Float(string="Amount", compute="_compute_total", store=True)
     start_date = fields.Datetime(string="Start Date")
     end_date = fields.Datetime(string="End Date")
+    payment_due_date = fields.Datetime(string="Due Date", compute="_compute_payment_due_date")
     states = fields.Selection([
         ('Draft', 'Draft'),
         ('Confirmed', 'Confirmed'),
@@ -63,6 +65,11 @@ class PropertyRentalLease(models.Model):
         for record in self:
             record.price = sum(line.amount for line in record.property_ids)
 
+    @api.depends('end_date')
+    def _compute_payment_due_date(self):
+        for record in self:
+            record.payment_due_date = record.end_date + timedelta(days=1) if record.end_date else False
+
     @api.depends('invoice_ids.payment_state', 'invoice_ids.state', 'property_ids.order_line_ids',
                  'property_ids.invoiced_quantity')
     def _compute_invoice_status(self):
@@ -92,16 +99,30 @@ class PropertyRentalLease(models.Model):
         for record in self:
             record.invoice_count = self.env['account.move'].search_count([('id', '=', record.invoice_ids.ids)])
 
-    @api.constrains('end_date')
-    def _state_change(self):
+    @api.model
+    def _cron_expire_leases(self):
         today = fields.Datetime.now()
-        for rec in self:
-            if today > rec.end_date:
-                rec.states = 'Expired'
+        expired_leases = self.search([
+            ('end_date', '<', today),('states', '=', 'Draft')
+        ])
+        for lease in expired_leases:
+            lease.states = 'Expired'
+            mail_template = self.env.ref('property_management.email_template_lease_expiry')
+            mail_template.send_mail(lease.id, force_send=True)
+
+    @api.model
+    def _cron_late_payment(self):
+        current_date = fields.Datetime.now()
+        late_payments = self.search([('payment_due_date', '<', current_date)])
+        for rec in late_payments:
+            mail_template = self.env.ref('property_management.email_template_late_payment')
+            mail_template.send_mail(rec.id, force_send=True)
+
 
        # sequence creation
     @api.model
     def create(self, vals):
+        print('vals', vals)
         """generating unique sequence number"""
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('property.rental') or _('New')
@@ -119,6 +140,8 @@ class PropertyRentalLease(models.Model):
             if not attachments:
                 raise UserError("Please attach required attachments")
             record.states = 'Confirmed'
+            mail_template = self.env.ref('property_management.email_template_lease_confirmed')
+            mail_template.send_mail(self.id, force_send=True)
             for line in record.property_ids:
                 if record.rental_type == 'Rent':
                     line.property_id.states = 'Rented'
@@ -134,6 +157,8 @@ class PropertyRentalLease(models.Model):
     def action_do_close(self):
         """action for close button"""
         self.states = "Closed"
+        mail_template = self.env.ref('property_management.email_template_lease_closing')
+        mail_template.send_mail(self.id, force_send=True)
 
     def action_do_return(self):
         """action for return button"""
@@ -142,6 +167,8 @@ class PropertyRentalLease(models.Model):
     def action_do_expire(self):
         """action for expire button"""
         self.states = "Expired"
+        mail_template = self.env.ref('property_management.email_template_lease_expiry')
+        mail_template.send_mail(self.id, force_send=True)
 
 # function to create invoice
     def action_create_invoice(self):

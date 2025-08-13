@@ -57,6 +57,7 @@
                             <field name="active" />
                             <field name="total_amount"/>
                             <field name="end_date" invisible="1"/>
+                            <field name="payment_due_date"/>
                             <field name="start_date" string="Date" widget="daterange"
                                    options="{'end_date_field': 'end_date'}" readonly="states in 'Confirmed'"/>
                             <field name="company_id" readonly="states in 'Confirmed'"/>
