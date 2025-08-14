@@ -2,7 +2,8 @@
 {
     'name': "Property Management",
     'depends': ['base', 'mail', 'sale'],
-    'data': ["security/ir.model.access.csv",
+    'data': ["security/property_management_groups.xml",
+             "security/ir.model.access.csv",
              "data/ir_sequence_data.xml",
              "data/property_facilities_data.xml",
              "data/property_details_datas.xml",

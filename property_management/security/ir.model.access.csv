@@ -1,5 +1,9 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_property.details,access_property.details,model_property_details,base.group_user,1,1,1,1
-access_property.rental.lease,access_property.rental.lease,model_property_rental_lease,base.group_user,1,1,1,1
-access_property.facility,access_property.facility.lease,model_property_facility,base.group_user,1,1,1,1
-access_property.rental.lease.lines,access_property.rental.lease.lines,model_property_rental_lease_lines,base.group_user,1,1,1,1
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_property_details_manager,property.details.manager,model_property_details,property_management.group_property_manager,1,1,1,1
+access_property_details_user,property.details.user,model_property_details,property_management.group_property_user,1,1,0,0
+access_property_rental_lease_manager,property.rental.lease.manager,model_property_rental_lease,property_management.group_property_manager,1,1,1,1
+access_property_rental_lease_user,property.rental.lease.user,model_property_rental_lease,property_management.group_property_user,1,1,1,0
+access_property_facility_manager,property.facility.manager,model_property_facility,property_management.group_property_manager,1,1,1,1
+access_property_facility_user,property.facility.user,model_property_facility,property_management.group_property_user,0,1,1,0
+access_property_rental_lease_lines_manager,property.rental.lease.lines.manager,model_property_rental_lease_lines,property_management.group_property_manager,1,1,1,1
+access_property_rental_lease_lines_user,property.rental.lease.lines.user,model_property_rental_lease_lines,property_management.group_property_user,1,1,1,0

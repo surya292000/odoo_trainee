@@ -118,11 +118,9 @@ class PropertyRentalLease(models.Model):
             mail_template = self.env.ref('property_management.email_template_late_payment')
             mail_template.send_mail(rec.id, force_send=True)
 
-
        # sequence creation
     @api.model
     def create(self, vals):
-        print('vals', vals)
         """generating unique sequence number"""
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('property.rental') or _('New')
@@ -130,25 +128,24 @@ class PropertyRentalLease(models.Model):
 
     # noinspection PyNoneFunctionAssignment
     def action_do_confirm(self):
-        """action for confirm"""
-        for record in self:
-            """checking the required attachments"""
-            attachments = self.env['ir.attachment'].search([
-                ('res_model', '=', 'property.rental.lease'),
-                ('res_id', '=', self.id)
-            ])
-            if not attachments:
-                raise UserError("Please attach required attachments")
-            record.states = 'Confirmed'
-            mail_template = self.env.ref('property_management.email_template_lease_confirmed')
-            mail_template.send_mail(self.id, force_send=True)
-            for line in record.property_ids:
-                if record.rental_type == 'Rent':
-                    line.property_id.states = 'Rented'
-                elif record.rental_type == 'Lease':
-                    line.property_id.states = 'Leased'
-                else:
-                    line.property_id.states = 'Draft'
+        """action for confirm button"""
+        # checking the required attachments
+        attachments = self.env['ir.attachment'].search([
+            ('res_model', '=', 'property.rental.lease'),
+            ('res_id', '=', self.id)
+        ])
+        if not attachments:
+            raise UserError("Please attach required attachments")
+        self.states = 'Confirmed'
+        mail_template = self.env.ref('property_management.email_template_lease_confirmed')
+        mail_template.send_mail(self.id, force_send=True)
+        for line in self.property_ids:
+            if self.rental_type == 'Rent':
+                line.property_id.states = 'Rented'
+            elif self.rental_type == 'Lease':
+                line.property_id.states = 'Leased'
+            else:
+                line.property_id.states = 'Draft'
 
     def action_do_draft(self):
         """action for draft button"""
@@ -189,7 +186,7 @@ class PropertyRentalLease(models.Model):
                         'name': line.property_id.name,
                         'quantity': qty_remaining,
                         'price_unit': line.amount,
-                        'property_lease_line_id': line.id,
+                        'property_invoice_line_id': line.id,
                     }))
         if lines_to_invoice:
             """checking draft invoice"""
@@ -206,7 +203,7 @@ class PropertyRentalLease(models.Model):
                 })
                 """linking property lines and invoice lines"""
                 for lines in invoice.invoice_line_ids:
-                    lines.property_lease_line_id.order_line_ids = [Command.link(lines.id)]
+                    lines.property_invoice_line_id.order_line_ids = [Command.link(lines.id)]
                 self.write({'invoice_ids': [Command.link(invoice.id)]})
                 body = _('The %s Invoice is created', self.name)
                 self.message_post(body=body)
