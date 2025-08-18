@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 from odoo import api, Command, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class PropertyRentalLease(models.Model):
@@ -11,16 +11,18 @@ class PropertyRentalLease(models.Model):
 
     name = fields.Char(string='reference', readonly="1", default=lambda self: _('New'))
     property_ids = fields.One2many("property.rental.lease.lines",
-                                   "rental_id", string="Property")
+                                   "rental_id", string="Property", required=True)
     rental_type = fields.Selection([('Rent', 'Rent'), ('Lease', 'Lease')], String="Type", required=True)
     tenant_id = fields.Many2one("res.partner", string="Tenant", required=True)
     amount = fields.Float('amount', related="property_ids.amount")
     price = fields.Float(string="Amount", compute="_compute_total", store=True)
     start_date = fields.Datetime(string="Start Date")
     end_date = fields.Datetime(string="End Date")
-    payment_due_date = fields.Datetime(string="Due Date", compute="_compute_payment_due_date")
+    payment_due_date = fields.Datetime(string="Due Date", compute="_compute_payment_due_date", store=True)
+    archive_date = fields.Datetime(string="Archive Date", compute='_compute_archive_date', store=True)
     states = fields.Selection([
         ('Draft', 'Draft'),
+        ('To Approve', 'To Approve'),
         ('Confirmed', 'Confirmed'),
         ('Closed', 'Closed'),
         ('Returned', 'Returned'),
@@ -70,6 +72,13 @@ class PropertyRentalLease(models.Model):
         for record in self:
             record.payment_due_date = record.end_date + timedelta(days=1) if record.end_date else False
 
+    @api.depends('payment_due_date')
+    def _compute_archive_date(self):
+        for record in self:
+            record.archive_date = record.payment_due_date + timedelta(days=1) if record.payment_due_date else False
+            print(record.archive_date, 'archive rec')
+
+
     @api.depends('invoice_ids.payment_state', 'invoice_ids.state', 'property_ids.order_line_ids',
                  'property_ids.invoiced_quantity')
     def _compute_invoice_status(self):
@@ -110,6 +119,12 @@ class PropertyRentalLease(models.Model):
             mail_template = self.env.ref('property_management.email_template_lease_expiry')
             mail_template.send_mail(lease.id, force_send=True)
 
+    @api.constrains('property_ids')
+    def _check_property_ids(self):
+        for lease in self:
+            if not lease.property_ids:
+                raise ValidationError(_("At least one property must be added to the lease to proceed."))
+
     @api.model
     def _cron_late_payment(self):
         current_date = fields.Datetime.now()
@@ -117,6 +132,16 @@ class PropertyRentalLease(models.Model):
         for rec in late_payments:
             mail_template = self.env.ref('property_management.email_template_late_payment')
             mail_template.send_mail(rec.id, force_send=True)
+
+    # noinspection PyUnreachableCode
+    @api.model
+    def _cron_archive_leases(self):
+        today = fields.Datetime.now()
+        print(today, 'today')
+        archive_lease_date = self.search([('archive_date', '<', today)])
+        print(archive_lease_date, 'archive lease date')
+        for rec in archive_lease_date:
+            rec.write({'active': 0,'states': 'Expired',})
 
        # sequence creation
     @api.model
@@ -150,6 +175,10 @@ class PropertyRentalLease(models.Model):
     def action_do_draft(self):
         """action for draft button"""
         self.states = "Draft"
+
+    def action_submit_for_approval(self):
+        """Users can submit lease for manager approval"""
+        self.states = "To Approve"
 
     def action_do_close(self):
         """action for close button"""

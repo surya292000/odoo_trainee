@@ -30,7 +30,7 @@ class PropertyRentalLeaseLines(models.Model):
                             and lin.move_id.state in ['posted'])
             line.invoiced_quantity = sum(related_invoice_lines.mapped('quantity'))
 
-    @api.onchange('self.rental_id.rental_type')
+    @api.onchange('rental_id.rental_type')
     def _onchange_rental_type(self):
         if self.rental_id.rental_type == 'Rent':
             self.property_id.states = 'Rented'

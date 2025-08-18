@@ -19,13 +19,16 @@
             <form>
                 <header>
                     <field name="states" widget="statusbar"
-                           statusbar_visible="Draft,Confirmed,Closed,Returned,Expired"/>
+                           statusbar_visible="Draft,To Approve,Confirmed,Closed,Returned,Expired"/>
                     <button name="action_create_invoice" type="object" string="Create Invoice" class="btn-primary"
                             invisible="states != 'Confirmed' or hide_invoice == True">
                     </button>
                     <button name="action_do_draft" type="object" string="Draft" invisible="states!='Confirmed'"/>
+                    <button name="action_submit_for_approval" type="object" string="Submit for Approval"
+                            invisible="states=='To Approve'" groups="!property_management.group_property_manager" class="btn-primary"/>
                     <button name="action_do_confirm" type="object" string="Confirm"
-                            invisible="states == 'Confirmed' or hide_invoice == True"/>
+                            invisible="states == 'Confirmed' or hide_invoice == True"
+                            groups="property_management.group_property_manager" class="btn-primary" />
                     <button name="action_do_close" type="object" string="Close" invisible="states == 'Draft'"/>
                     <button name="action_do_return" type="object" string="Return" invisible="states == 'Returned'"/>
                     <button name="action_do_expire" type="object" string="Expire" invisible="states == 'Expired'"/>
@@ -59,13 +62,13 @@
                             <field name="end_date" invisible="1"/>
                             <field name="payment_due_date"/>
                             <field name="start_date" string="Date" widget="daterange"
-                                   options="{'end_date_field': 'end_date'}" readonly="states in 'Confirmed'"/>
+                                   options="{'end_date_field': 'end_date'}" readonly="states in 'Confirmed'" required="1"/>
                             <field name="company_id" readonly="states in 'Confirmed'"/>
                         </group>
                     </group>
                     <notebook>
                         <page>
-                            <field name="property_ids" readonly="states in 'Confirmed'">
+                            <field name="property_ids" readonly="states in 'Confirmed' and 'To Approve'" required="1">
                                 <list editable="bottom">
                                     <field name="property_id"/>
                                     <field name="quantity" readonly="0"/>
