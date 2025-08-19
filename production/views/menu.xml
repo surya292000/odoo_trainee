@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="production_production"
+              name="Production"
+              sequence="25"/>
+
+    <menuitem id = "production"
+              name ="production"
+              parent ="production_production"
+              action="production_production_action"
+              sequence="1"/>
+</odoo>

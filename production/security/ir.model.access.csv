@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+production_production_employee,production.production employee,model_production_production,production.group_production_employee,1,1,1,1
+production_production_manager,production.production manager,model_production_production,production.group_production_manager,1,1,0,0
+production_production_head,production.production head,model_production_production,production.group_production_head,1,1,1,0
+production_product_lines_employee,production.product.lines employee,model_production_product_lines,production.group_production_employee,1,1,1,1
+production_product_lines_manager,production.product.lines manager,model_production_product_lines,production.group_production_manager,1,1,0,0
+production_product_lines_head,production.product.lines head,model_production_product_lines,production.group_production_head,1,1,1,0
+
+
+
+
+
+

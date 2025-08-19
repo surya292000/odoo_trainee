@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="production_production_view_list" model="ir.ui.view">
+        <field name="name">production.production.view.list</field>
+        <field name="model">production.production</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id"/>
+                <field name="date_needed"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="production_production_view_form" model="ir.ui.view">
+        <field name="name">production.production.view.form</field>
+        <field name="model">production.production</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="states" widget="statusbar"
+                           statusbar_visible="draft,submit,approved_by_manager,approved_by_head,rejected"/>
+                    <button name="action_do_draft" type="object" string="Draft" invisible="states == 'draft'" groups="production.group_production_employee"/>
+                    <button name="action_do_submit" type="object" string="Submit" groups="production.group_production_employee" invisible="states == 'submit' or not 'draft'"/>
+                     <button name="action_do_approve_by_manager" type="object" string="Approve" groups="production.group_production_manager" invisible="states == 'approved_by_manager'"/>
+                     <button name="action_do_approve_by_head" type="object" string="Approve" groups="production.group_production_head" invisible="states == 'approved_by_head' or not 'approved_by_manager'"/>
+                     <button name="action_do_reject" type="object" string="Reject" groups="production.group_production_head" invisible="states == 'rejected'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                        </group>
+                        <group>
+                            <field name="date_needed"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page>
+                            <field name="product_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity" readonly="0"/>
+                                    <field name="product_uom"/>
+                                    <field name="order_type"/>
+                                    <field name="vendors_ids" readonly="0" widget="many2many_tags"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="production_production_action" model="ir.actions.act_window">
+        <field name="name">Production</field>
+        <field name="res_model">production.production</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">empty</p>
+        </field>
+    </record>
+</odoo>

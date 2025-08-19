@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="production_product_lines_view_list" model="ir.ui.view">
+        <field name="name">production.product.lines.view.list</field>
+        <field name="model">production.product.lines</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="product_id"/>
+                <field name="quantity" string="Quantity"/>
+                <field name="product_uom" string="unit"/>
+                <field name="production_product_id"/>
+                <field name="vendors_ids"/>
+                <field name="order_type"/>
+            </list>
+        </field>
+    </record>
+    <record id="production_product_lines_view_form" model="ir.ui.view">
+        <field name="name">production.product.lines.view.form</field>
+        <field name="model">production.product.lines</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="product_id"/>
+                <field name="quantity" string="Quantity"/>
+                <field name="product_uom"/>
+                <field name="vendors_ids" />
+                <field name="order_type"/>
+            </form>
+        </field>
+    </record>
+</odoo>
