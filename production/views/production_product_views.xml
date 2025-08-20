@@ -19,13 +19,27 @@
                 <header>
                     <field name="states" widget="statusbar"
                            statusbar_visible="draft,submit,approved_by_manager,approved_by_head,rejected"/>
-                    <button name="action_do_draft" type="object" string="Draft" invisible="states == 'draft'" groups="production.group_production_employee"/>
-                    <button name="action_do_submit" type="object" string="Submit" groups="production.group_production_employee" invisible="states == 'submit' or not 'draft'"/>
-                     <button name="action_do_approve_by_manager" type="object" string="Approve" groups="production.group_production_manager" invisible="states == 'approved_by_manager'"/>
-                     <button name="action_do_approve_by_head" type="object" string="Approve" groups="production.group_production_head" invisible="states == 'approved_by_head' or not 'approved_by_manager'"/>
-                     <button name="action_do_reject" type="object" string="Reject" groups="production.group_production_head" invisible="states == 'rejected'"/>
+                    <button name="action_do_draft" type="object" string="Draft"
+                            invisible="states == 'draft'"
+                            groups="production.group_production_employee"/>
+                    <button name="action_do_submit" type="object" string="Submit"
+                            invisible="states != 'draft'"/>
+                    <button name="action_do_approve_by_manager" type="object" string="Approve"
+                            groups="production.group_production_manager"
+                            invisible="states == 'approved_by_manager' and 'approved_by_head'"/>
+                    <button name="action_do_approve_by_head" type="object" string="Approve"
+                            groups="production.group_production_head"
+                            invisible="states == 'approved_by_head' or not 'approved_by_manager'"/>
+                    <button name="action_do_reject" type="object" string="Reject"
+                            groups="production.group_production_head" invisible="states == 'rejected'"/>
                 </header>
                 <sheet>
+                     <div name="button_box" position="inside">
+                        <button class="oe_stat_button" type="object" name="action_to_view_po" icon="fa-file-text-o"
+                                string="RFQ">
+                            <field string="RFQ" name="po_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="employee_id"/>
@@ -37,13 +51,13 @@
                     </group>
                     <notebook>
                         <page>
-                            <field name="product_ids">
+                            <field name="product_line_ids">
                                 <list editable="bottom">
-                                    <field name="product_id"/>
+                                    <field name="component_id"/>
                                     <field name="quantity" readonly="0"/>
-                                    <field name="product_uom"/>
-                                    <field name="order_type"/>
-                                    <field name="vendors_ids" readonly="0" widget="many2many_tags"/>
+                                    <field name="request_type"/>
+                                    <field name="vendor_ids" readonly="0" widget="many2many_tags"
+                                           invisible="request_type=='internal_transfer'"/>
                                 </list>
                             </field>
                         </page>

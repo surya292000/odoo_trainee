@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api
+from odoo import fields, models
 
 
 class ProductionProductLines(models.Model):
     _name = "production.product.lines"
     _description = "Product Lines"
 
-    product_id = fields.Many2one("product.product", string="Product")
-    product_uom = fields.Many2one(related="product_id.uom_id",string="Unit")
-    quantity = fields.Integer(string="Quantity")
-    production_product_id = fields.Many2one("production.production", string="production product")
-    vendors_ids = fields.Many2many("res.partner", string="vendors")
-    order_type = fields.Selection([('purchase_order', 'Purchase Order'), ('internal_transfer', 'Internal Transfer')])
-
-
-    # @api.depends('quantity','price_unit')
-    # def _compute_total_amount(self):
-    #     for record in self:
-    #         record.total_amount = record.quantity * record.price_unit
+    component_id = fields.Many2one('product.product', string='Component')
+    quantity = fields.Float(string="Quantity", default=1)
+    production_id = fields.Many2one("production.production", string="Production")
+    vendor_ids = fields.Many2many("res.partner", string="Vendors")
+    request_type = fields.Selection([
+        ('purchase_order', 'Purchase Order'),
+        ('internal_transfer', 'Internal Transfer')],
+        default="purchase_order", required=True)
