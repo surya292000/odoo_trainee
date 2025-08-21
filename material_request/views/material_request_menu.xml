@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="material_request"
+              name="Material Request"
+              sequence="25"/>
+
+    <menuitem id="material_request_details"
+              name="Material Request"
+              parent="material_request"
+              action="material_request.material_request_action"
+              sequence="1"/>
+</odoo>

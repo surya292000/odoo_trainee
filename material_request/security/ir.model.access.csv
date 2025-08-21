@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+material_request_employee,material.request employee,model_material_request,material_request.group_material_request_employee,1,1,1,1
+material_request_manager,material.request manager,model_material_request,material_request.group_material_request_manager,1,1,1,0
+material_request_head,material.request head,model_material_request,material_request.group_material_request_head,1,1,1,1
+material_request_lines_employee,material.request.lines employee,model_material_request_lines,material_request.group_material_request_employee,1,1,1,1
+material_request_lines_manager,material.request.lines manager,model_material_request_lines,material_request.group_material_request_manager,1,1,1,0
+material_request_lines_head,material.request.lines head,model_material_request_lines,material_request.group_material_request_head,1,1,1,1

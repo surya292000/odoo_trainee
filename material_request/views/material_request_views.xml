@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="production_production_view_list" model="ir.ui.view">
-        <field name="name">production.production.view.list</field>
-        <field name="model">production.production</field>
+    <record id="material_request_view_list" model="ir.ui.view">
+        <field name="name">material.request.view.list</field>
+        <field name="model">material.request</field>
         <field name="arch" type="xml">
             <list>
                 <field name="employee_id"/>
@@ -11,9 +11,9 @@
         </field>
     </record>
 
-    <record id="production_production_view_form" model="ir.ui.view">
-        <field name="name">production.production.view.form</field>
-        <field name="model">production.production</field>
+    <record id="material_request_view_form" model="ir.ui.view">
+        <field name="name">material.request.view.form</field>
+        <field name="model">material.request</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -21,17 +21,17 @@
                            statusbar_visible="draft,submit,approved_by_manager,approved_by_head,rejected"/>
                     <button name="action_do_draft" type="object" string="Draft"
                             invisible="states == 'draft'"
-                            groups="production.group_production_employee"/>
+                            groups="material_request.group_material_request_employee"/>
                     <button name="action_do_submit" type="object" string="Submit"
-                            invisible="states != 'draft'"/>
+                            invisible="states != 'draft'" class="btn-primary"/>
                     <button name="action_do_approve_by_manager" type="object" string="Approve"
-                            groups="production.group_production_manager"
-                            invisible="states == 'approved_by_manager' and 'approved_by_head'"/>
+                            groups="material_request.group_material_request_manager"
+                            invisible="states == 'approved_by_manager' and 'approved_by_head'" class="btn-primary"/>
                     <button name="action_do_approve_by_head" type="object" string="Approve"
-                            groups="production.group_production_head"
-                            invisible="states == 'approved_by_head' or not 'approved_by_manager'"/>
+                            groups="material_request.group_material_request_head"
+                            invisible="states == 'approved_by_head' or not 'approved_by_manager'" class="btn-primary"/>
                     <button name="action_do_reject" type="object" string="Reject"
-                            groups="production.group_production_head" invisible="states == 'rejected'"/>
+                            groups="material_request.group_material_request_head" invisible="states == 'rejected' or 'approved_by_head'"/>
                 </header>
                 <sheet>
                      <div name="button_box" position="inside">
@@ -51,13 +51,15 @@
                     </group>
                     <notebook>
                         <page>
-                            <field name="product_line_ids">
+                            <field name="material_line_ids">
                                 <list editable="bottom">
                                     <field name="component_id"/>
                                     <field name="quantity" readonly="0"/>
                                     <field name="request_type"/>
                                     <field name="vendor_ids" readonly="0" widget="many2many_tags"
                                            invisible="request_type=='internal_transfer'"/>
+                                    <field name="src_location_id" invisible="request_type=='purchase_order'"/>
+                                    <field name="dest_location_id" invisible="request_type=='purchase_order'"/>
                                 </list>
                             </field>
                         </page>
@@ -66,9 +68,9 @@
             </form>
         </field>
     </record>
-    <record id="production_production_action" model="ir.actions.act_window">
-        <field name="name">Production</field>
-        <field name="res_model">production.production</field>
+    <record id="material_request_action" model="ir.actions.act_window">
+        <field name="name">Material Request</field>
+        <field name="res_model">material.request</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">empty</p>
