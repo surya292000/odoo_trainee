@@ -5,6 +5,7 @@
         <field name="model">material.request</field>
         <field name="arch" type="xml">
             <list>
+                <field name="name"/>
                 <field name="employee_id"/>
                 <field name="date_needed"/>
             </list>
@@ -20,25 +21,36 @@
                     <field name="states" widget="statusbar"
                            statusbar_visible="draft,submit,approved_by_manager,approved_by_head,rejected"/>
                     <button name="action_do_draft" type="object" string="Draft"
-                            invisible="states == 'draft'"
+                            invisible="states == 'draft' or states =='approved_by_head' or states =='rejected'"
                             groups="material_request.group_material_request_employee"/>
                     <button name="action_do_submit" type="object" string="Submit"
-                            invisible="states != 'draft'" class="btn-primary"/>
+                            invisible="states != 'draft'" class="btn-primary"
+                            groups="material_request.group_material_request_employee"/>
                     <button name="action_do_approve_by_manager" type="object" string="Approve"
                             groups="material_request.group_material_request_manager"
-                            invisible="states == 'approved_by_manager' and 'approved_by_head'" class="btn-primary"/>
+                            invisible="states == 'approved_by_manager' or states =='approved_by_head' or states =='rejected'"
+                            class="btn-primary"/>
                     <button name="action_do_approve_by_head" type="object" string="Approve"
                             groups="material_request.group_material_request_head"
-                            invisible="states == 'approved_by_head' or not 'approved_by_manager'" class="btn-primary"/>
+                            invisible="states =='approved_by_head' or states =='rejected'" class="btn-primary"/>
                     <button name="action_do_reject" type="object" string="Reject"
-                            groups="material_request.group_material_request_head" invisible="states == 'rejected' or 'approved_by_head'"/>
+                            groups="material_request.group_material_request_head" invisible="states == 'rejected'"/>
                 </header>
                 <sheet>
-                     <div name="button_box" position="inside">
+                    <div name="button_box" position="inside">
                         <button class="oe_stat_button" type="object" name="action_to_view_po" icon="fa-file-text-o"
                                 string="RFQ">
                             <field string="RFQ" name="po_count" widget="statinfo"/>
                         </button>
+                        <button class="oe_stat_button" type="object" name="action_to_view_int" icon="fa-file-text-o"
+                                string="RFQ">
+                            <field string="Internal Transfer" name="int_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -56,10 +68,9 @@
                                     <field name="component_id"/>
                                     <field name="quantity" readonly="0"/>
                                     <field name="request_type"/>
-                                    <field name="vendor_ids" readonly="0" widget="many2many_tags"
-                                           invisible="request_type=='internal_transfer'"/>
-                                    <field name="src_location_id" invisible="request_type=='purchase_order'"/>
-                                    <field name="dest_location_id" invisible="request_type=='purchase_order'"/>
+                                    <field name="vendor_ids" readonly="0" widget="many2many_tags"/>
+                                    <field name="src_location_id"/>
+                                    <field name="dest_location_id"/>
                                 </list>
                             </field>
                         </page>

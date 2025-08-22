@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from dateutil.utils import today
-from odoo import fields, models, Command
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
 
 
@@ -8,6 +8,7 @@ class MaterialRequest(models.Model):
     _name = "material.request"
     _description = "Material Request"
 
+    name = fields.Char(string='reference', readonly="1")
     material_line_ids = fields.One2many("material.request.lines", "request_id", string="request Lines")
     employee_id = fields.Many2one("res.partner", string="Requested Employee", required=True)
     date_needed = fields.Datetime(string="Date Needed", required=True)
@@ -24,11 +25,22 @@ class MaterialRequest(models.Model):
         'purchase.order',
         string="Purchase Orders"
     )
-    internal_ids = fields.Many2many('stock.picking', copy=False)
+    int_ids = fields.Many2many("stock.picking",string="Internal Transfers", copy=False)
+    int_count = fields.Integer(string="Int count", compute="_compute_int_count")
     company_id = fields.Many2one("res.company", string="Company")
 
     def _compute_po_count(self):
         self.po_count = self.env['purchase.order'].search_count([('id', 'in', self.po_ids.ids)])
+
+    def _compute_int_count(self):
+        self.int_count = self.env['stock.picking'].search_count([('id', 'in', self.int_ids.ids)])
+
+    @api.model
+    def create(self, vals):
+        """generating unique sequence number"""
+        if vals.get('name', _('New')) == _('New'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('material.request.ref') or _('New')
+        return super(MaterialRequest, self).create(vals)
 
     def action_do_draft(self):
         self.states = 'draft'
@@ -51,22 +63,24 @@ class MaterialRequest(models.Model):
             for vendor in line.vendor_ids:
                 purchase = self.env['purchase.order'].search([
                     ('partner_id', '=', vendor.id),
-                    ('state', '=', 'draft'), ('product_id', '=', line.component_id.id)
-                ], )
+                    ('state', '=', 'draft')
+                ], limit=1)
                 if purchase:
-                    po_line = purchase.order_line.filtered(lambda lin: lin.product_id.id == line.component_id.id)
-                    if po_line:
-                        po_line.write({'product_qty': line.quantity})
+                    for lin in purchase.order_line:
+                        if lin:
+                            if lin.product_id.id == line.component_id.id:
+                                lin.product_qty += line.quantity
+                    
                     self.write({'po_ids': [fields.Command.link(purchase.id)]})
                 else:
-                    purchase = self.env['purchase.order'].create([{
-                        'partner_id': vendor.id,
-                        'order_line': [fields.Command.create({
-                            'product_id': line.component_id.id,
-                            'product_qty': line.quantity
-                        })]
-                    }])
-                self.write({'po_ids': [fields.Command.link(purchase.id)]})
+                        purchase = self.env['purchase.order'].create([{
+                            'partner_id': vendor.id,
+                            'order_line': [fields.Command.create({
+                                'product_id': line.component_id.id,
+                                'product_qty': line.quantity
+                            })]
+                        }])
+                        self.write({'po_ids': [fields.Command.link(purchase.id)]})
 
         for line in internal_trans_list:
             internal = self.env['stock.picking'].create([{
@@ -78,9 +92,10 @@ class MaterialRequest(models.Model):
                     'product_id': line.component_id.id,
                     'location_id': line.src_location_id.id,
                     'location_dest_id': line.dest_location_id.id,
+                    'product_uom_qty' : line.quantity,
                 })]
             }])
-            self.write({'internal_ids': [fields.Command.link(internal.id)]})
+            self.write({'int_ids': [fields.Command.link(internal.id)]})
         if self.states != "approved_by_manager":
             raise UserError("You can only approve as Head when Manager has already approved.")
         self.states = "approved_by_head"
@@ -102,5 +117,15 @@ class MaterialRequest(models.Model):
             'context': {'create': False},
         }
 
+    def action_to_view_int(self):
+        return {
+            "type": 'ir.actions.act_window',
+            'res_model': 'stock.picking',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', self.int_ids.ids)],
+            'context': {'create': False},
+        }
+
     def action_do_reject(self):
         self.states = "rejected"
+
