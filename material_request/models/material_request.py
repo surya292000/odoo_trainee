@@ -66,21 +66,29 @@ class MaterialRequest(models.Model):
                     ('state', '=', 'draft')
                 ], limit=1)
                 if purchase:
-                    for lin in purchase.order_line:
-                        if lin:
+                    existing_product_ids = set(purchase.order_line.mapped('product_id').ids)
+                    if line.component_id.id in existing_product_ids:
+                        for lin in purchase.order_line:
                             if lin.product_id.id == line.component_id.id:
                                 lin.product_qty += line.quantity
-                    
-                    self.write({'po_ids': [fields.Command.link(purchase.id)]})
-                else:
-                        purchase = self.env['purchase.order'].create([{
-                            'partner_id': vendor.id,
+                                break
+                    else:
+                        purchase.write({
                             'order_line': [fields.Command.create({
                                 'product_id': line.component_id.id,
-                                'product_qty': line.quantity
+                                'product_qty': line.quantity,
                             })]
-                        }])
-                        self.write({'po_ids': [fields.Command.link(purchase.id)]})
+                        })
+                    self.write({'po_ids': [fields.Command.link(purchase.id)]})
+                else:
+                    purchase = self.env['purchase.order'].create([{
+                        'partner_id': vendor.id,
+                        'order_line': [fields.Command.create({
+                            'product_id': line.component_id.id,
+                            'product_qty': line.quantity,
+                        })]
+                    }])
+                    self.write({'po_ids': [fields.Command.link(purchase.id)]})
 
         for line in internal_trans_list:
             internal = self.env['stock.picking'].create([{
