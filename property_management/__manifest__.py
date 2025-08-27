@@ -12,12 +12,17 @@
              "data/action_cron_test_method.xml",
              "data/mail_template_data.xml",
 
+             "wizard/property_report_wizard_views.xml",
+
+             # "report/ir_actions_report.xml",
+             # "report/property_rental_lease_report_template.xml",
+
              "views/property_facility_views.xml",
              "views/property_details_views.xml",
              "views/property_rental_lease_views.xml",
              "views/property_rental_lease_lines_views.xml",
              "views/res_partner_views.xml",
-             "views/menu.xml"
+             "views/property_management_menu.xml"
              ],
     'application': True,
     "sequence": 1

@@ -30,9 +30,11 @@ class MaterialRequest(models.Model):
     company_id = fields.Many2one("res.company", string="Company")
 
     def _compute_po_count(self):
+        """compute function for purchase order count"""
         self.po_count = self.env['purchase.order'].search_count([('id', 'in', self.po_ids.ids)])
 
     def _compute_int_count(self):
+        """compute function for internal transfer count"""
         self.int_count = self.env['stock.picking'].search_count([('id', 'in', self.int_ids.ids)])
 
     @api.model
@@ -43,16 +45,20 @@ class MaterialRequest(models.Model):
         return super(MaterialRequest, self).create(vals)
 
     def action_do_draft(self):
+        """action button for draft"""
         self.states = 'draft'
 
     def action_do_submit(self):
+        """action button for submit"""
         self.states = 'submit'
 
     def action_do_approve_by_manager(self):
+        """action for approve button by manager"""
         self.states = "approved_by_manager"
 
     # noinspection PyUnresolvedReferences
     def action_do_approve_by_head(self):
+        """action for approve button by head"""
         po_list = self.material_line_ids.filtered(lambda rec: rec.request_type == 'purchase_order')
         internal_trans_list = self.material_line_ids.filtered(lambda rec: rec.request_type == 'internal_transfer')
         picking_types = self.env['stock.picking.type'].search([
@@ -108,15 +114,8 @@ class MaterialRequest(models.Model):
             raise UserError("You can only approve as Head when Manager has already approved.")
         self.states = "approved_by_head"
 
-            # if purchase:
-            #     return {
-            #         "type": 'ir.actions.act_window',
-            #         'res_model': 'purchase.order',
-            #         "view_mode": 'list,form',
-            #         'res_id': purchase.id,
-            #     }
-
     def action_to_view_po(self):
+        """action view for purchase order"""
         return {
             "type": 'ir.actions.act_window',
             'res_model': 'purchase.order',
@@ -126,6 +125,7 @@ class MaterialRequest(models.Model):
         }
 
     def action_to_view_int(self):
+        """action view for internal transfer"""
         return {
             "type": 'ir.actions.act_window',
             'res_model': 'stock.picking',
@@ -135,5 +135,5 @@ class MaterialRequest(models.Model):
         }
 
     def action_do_reject(self):
+        """action button for rejection"""
         self.states = "rejected"
-

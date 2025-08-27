@@ -24,4 +24,10 @@
               parent="configuration"
               action="property_facilities_action"
               sequence="4"/>
+
+    <menuitem id="property_report_wizard"
+              name="wizard"
+              parent="property_details"
+              action="property_management.action_property_report_wizard"
+              sequence="5"/>
 </odoo>

@@ -76,8 +76,6 @@ class PropertyRentalLease(models.Model):
     def _compute_archive_date(self):
         for record in self:
             record.archive_date = record.payment_due_date + timedelta(days=1) if record.payment_due_date else False
-            print(record.archive_date, 'archive rec')
-
 
     @api.depends('invoice_ids.payment_state', 'invoice_ids.state', 'property_ids.order_line_ids',
                  'property_ids.invoiced_quantity')
@@ -137,9 +135,7 @@ class PropertyRentalLease(models.Model):
     @api.model
     def _cron_archive_leases(self):
         today = fields.Datetime.now()
-        print(today, 'today')
         archive_lease_date = self.search([('archive_date', '<', today)])
-        print(archive_lease_date, 'archive lease date')
         for rec in archive_lease_date:
             rec.write({'active': 0,'states': 'Expired',})
 

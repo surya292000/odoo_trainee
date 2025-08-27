@@ -7,3 +7,4 @@ access_property_facility_manager,property.facility.manager,model_property_facili
 access_property_facility_user,property.facility.user,model_property_facility,property_management.group_property_user,0,1,1,0
 access_property_rental_lease_lines_manager,property.rental.lease.lines.manager,model_property_rental_lease_lines,property_management.group_property_manager,1,1,1,1
 access_property_rental_lease_lines_user,property.rental.lease.lines.user,model_property_rental_lease_lines,property_management.group_property_user,1,1,1,0
+access_rent_lease_report_wizard_user,rent.lease.report.wizard.user,model_rent_lease_report_wizard,property_management.group_property_user,1,1,1,1
