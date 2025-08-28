@@ -14,8 +14,8 @@
 
              "wizard/property_report_wizard_views.xml",
 
-             # "report/ir_actions_report.xml",
-             # "report/property_rental_lease_report_template.xml",
+             "report/ir_actions_report.xml",
+             "report/property_rental_lease_report_template.xml",
 
              "views/property_facility_views.xml",
              "views/property_details_views.xml",

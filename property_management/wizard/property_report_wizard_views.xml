@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="rent_lease_report_wizard_form_view" model="ir.ui.view">
         <field name="name">rent.lease.report.wizard.form.view</field>
         <field name="model">rent.lease.report.wizard</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Rent/Lease Report">
                 <group>
-                    <field name="owner_id"/>-->
+                     <field name="owner_id"/>
                     <field name="tenant_id"/>
-                    <field name="property"/>
                     <field name="rental_type"/>
+                    <field name="property_id"/>
                     <field name="from_date"/>
                     <field name="to_date"/>
                 </group>
                 <footer>
-                    <button type="object" name="action_share"/>
+                    <button string="Print Report" type="object" name="action_print_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
 
     <record id="action_property_report_wizard" model="ir.actions.act_window">
-        <field name="name">property wizard</field>
+        <field name="name">Property Wizard</field>
         <field name="res_model">rent.lease.report.wizard</field>
-        <!--        <field name="view_mode">form </field>-->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="rent_lease_report_wizard_form_view"/>
         <field name="target">new</field>
-        <!--            <form string ="wizard views ">-->
-        <!--                <field name="owner_id"/>-->
-        <!--                <field name="tenant_id"/>-->
-        <!--                <field name="property"/>-->
-        <!--                <field name="rental_type"/>-->
-        <!--                <field name="from_date"/>-->
-        <!--                <field name="to_date"/>-->
-        <!--            </form>-->
-        <!--        </field>-->
     </record>
 </odoo>

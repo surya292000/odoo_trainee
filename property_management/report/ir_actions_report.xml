@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <record id="action_property_rental_lease_report" model="ir.actions.report">
-    <field name="name">Property Rental Lease Report</field>
-    <field name="model">property.rental.lease</field>
-    <field name="report_type">qweb-pdf</field>
-    <field name="report_name">property_management.property_rental_lease_report_template</field>
-    <field name="print_report_name">'Property Rental Lease Report - %s' % (object.name)</field>
-    <field name="binding_model_id" ref="model_my_model"/> <!-- This adds the "Print" button -->
-</record>
+    <record id="action_property_rental_lease_report" model="ir.actions.report">
+        <field name="name">Property Rental Lease Report</field>
+        <field name="model">property.rental.lease</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">property_management.property_rental_lease_report_template</field>
+        <field name="print_report_name">'Property Rental Lease Report - %s' % (object.name)</field>
+        <field name="report_file">property_management.property_rental_lease_report_template</field>
+        <field name="binding_model_id" ref="model_property_rental_lease"/> <!-- This adds the "Print" button -->
+        <field name="binding_type">report</field>
+    </record>
 </odoo>
 

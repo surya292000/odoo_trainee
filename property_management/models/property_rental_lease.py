@@ -58,8 +58,7 @@ class PropertyRentalLease(models.Model):
     @api.depends("total_days", "price")
     def _compute_total_amount(self):
         for record in self:
-             if record.rental_type == 'rent':
-                record.total_amount = record.total_days * record.price
+            record.total_amount = record.total_days * record.price
 
     @api.depends('property_ids.amount')
     def _compute_total(self):
@@ -131,7 +130,6 @@ class PropertyRentalLease(models.Model):
             mail_template = self.env.ref('property_management.email_template_late_payment')
             mail_template.send_mail(rec.id, force_send=True)
 
-    # noinspection PyUnreachableCode
     @api.model
     def _cron_archive_leases(self):
         today = fields.Datetime.now()

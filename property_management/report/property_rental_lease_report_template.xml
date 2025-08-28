@@ -2,18 +2,30 @@
 <odoo>
     <template id="property_rental_lease_report_template">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <div class="page">
-                    <h2>My Model Report</h2>
-                    <p>
-                        <strong>Name:</strong>
-                        <t t-esc="doc.name"/>
-                    </p>
-                    <p>
-                        <strong>Description:</strong>
-                        <t t-esc="doc.description"/>
-                    </p>
-                </div>
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h1>Property Rental Lease</h1>
+                        </div>
+                        <h3>
+                            Tenant:
+                            <span t-field="o.tenant_id"/>
+                        </h3>
+                         <h3>
+                            Tenant:
+                            <span t-field="o.tenant_id"/>
+                        </h3>
+                        <h3>
+                            Rental Type:
+                            <span t-field="o.rental_type"/>
+                        </h3>
+                         <h3>
+                            Date From:
+                            <span t-field="o.from_date"/>
+                        </h3>
+                    </div>
+                </t>
             </t>
         </t>
     </template>
