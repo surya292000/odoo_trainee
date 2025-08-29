@@ -4,13 +4,15 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
+                    <t t-esc="o"/>
                     <div class="page">
+                        <span>qwertyu</span>
                         <div class="text-center">
                             <h1>Property Rental Lease</h1>
                         </div>
                         <h3>
-                            Tenant:
-                            <span t-field="o.tenant_id"/>
+                            Owner:
+                            <span t-field="o.owner_id"/>
                         </h3>
                          <h3>
                             Tenant:
@@ -30,3 +32,4 @@
         </t>
     </template>
 </odoo>
+
