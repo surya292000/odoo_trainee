@@ -7,9 +7,9 @@
             <form string="Rent/Lease Report">
                 <group>
                      <field name="owner_id"/>
-                    <field name="tenant_id"/>
+                    <field name="tenant_ids" widget="many2many_tags"/>
                     <field name="rental_type"/>
-                    <field name="property_id"/>
+                    <field name="property_ids" widget="many2many_tags"/>
                     <field name="from_date"/>
                     <field name="to_date"/>
                 </group>

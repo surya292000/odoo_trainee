@@ -17,10 +17,10 @@ class PropertyRentalLeaseLines(models.Model):
     @api.depends('rental_id.rental_type')
     def _compute_amount(self):
         for rec in self:
-            if rec.rental_id.rental_type == 'Rent':
-                rec.amount = rec.property_id.rent
-            else:
-                rec.amount = rec.property_id.legal_amount
+            rec.amount = rec.property_id.rent
+            print(rec.amount, 'amount')
+        else:
+            rec.amount = rec.property_id.legal_amount
 
     @api.depends('order_line_ids.move_id.state')
     def _compute_invoiced_quantity(self):

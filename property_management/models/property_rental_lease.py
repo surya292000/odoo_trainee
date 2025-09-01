@@ -12,7 +12,7 @@ class PropertyRentalLease(models.Model):
     name = fields.Char(string='reference', readonly="1", default=lambda self: _('New'))
     property_ids = fields.One2many("property.rental.lease.lines",
                                    "rental_id", string="Property", required=True)
-    rental_type = fields.Selection([('Rent', 'Rent'), ('Lease', 'Lease')], String="Type", required=True)
+    rental_type = fields.Selection([('rent', 'Rent'), ('lease', 'Lease')], String="Type", required=True)
     tenant_id = fields.Many2one("res.partner", string="Tenant", required=True)
     amount = fields.Float('amount', related="property_ids.amount")
     price = fields.Float(string="Amount", compute="_compute_total", store=True)

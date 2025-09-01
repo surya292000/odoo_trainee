@@ -21,7 +21,7 @@ class PropertyDetails(models.Model):
     can_be_sold = fields.Boolean(string="Can be sold")
     facilities_ids = fields.Many2many("property.facility", string="Facilities")
     rent_count = fields.Integer(String="Rent count", compute="_compute_rent_count", default=0)
-    states = fields.Selection([('Draft', 'Draft'), ('Rented', 'Rented'), ('Leased', 'Leased'),
+    states = fields.Selection([('Draft', 'Draft'), ('rented', 'Rented'), ('Leased', 'Leased'),
                                ('Sold', 'Sold')],
                               string='State', required=True, default='Draft')
     property_rental_lease_id = fields.Many2one("property.rental.lease", string="state of rent or lease")
