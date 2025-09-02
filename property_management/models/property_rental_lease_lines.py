@@ -18,7 +18,6 @@ class PropertyRentalLeaseLines(models.Model):
     def _compute_amount(self):
         for rec in self:
             rec.amount = rec.property_id.rent
-            print(rec.amount, 'amount')
         else:
             rec.amount = rec.property_id.legal_amount
 

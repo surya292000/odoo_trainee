@@ -1,4 +1,5 @@
-from odoo import models,api
+from odoo import models, api
+
 
 class PropertyLeaseReport(models.AbstractModel):
     _name = 'report.property_management.property_rental_report_template'
@@ -6,12 +7,15 @@ class PropertyLeaseReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        print('qwertyu', data)
+        records = data.get("records", [])
+        tenants = list({rec['tenant_name'] for rec in records})
+        single_tenant = len(tenants) == 1
+        tenant_name = tenants[0] if single_tenant else False
+
         return {
             'doc_ids': docids,
             'doc_model': 'property.rental.lease',
-            # 'docs': data.get('records', []),
-            'docs': data,
-            'data': data['report']
-
+            'data': records,
+            'single_tenant': single_tenant,
+            'tenant_name': tenant_name,
         }
