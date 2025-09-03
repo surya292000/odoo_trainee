@@ -24,6 +24,11 @@
              "views/res_partner_views.xml",
              "views/property_management_menu.xml"
              ],
+    'assets': {
+    'web.assets_backend': [
+        'property_management/static/src/js/action_manager.js',
+    ],},
+
     'application': True,
     "sequence": 1
 }

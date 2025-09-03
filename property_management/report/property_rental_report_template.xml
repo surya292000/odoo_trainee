@@ -2,50 +2,101 @@
 <odoo>
     <template id="property_rental_report_template">
         <t t-call="web.html_container">
+
+            <!--            <t t-set="data_report_margin_top" t-value="10"/>-->
             <t t-call="web.external_layout">
                 <div class="page">
                     <h2 style="font-size:55px">Property Report</h2>
                     <t t-if="single_tenant">
-                        <h3 style="font-size:40px">Tenant: <t t-esc="tenant_name"/></h3>
+                        <div style="display:flex; align-items:center; font-size:20px; position:relative; width:100%;">
+                            <span style="position:absolute; left:0; font-size:30px">
+                                Tenant:
+                                <b>
+                                    <t t-esc="tenant_name"/>
+                                </b>
+                            </span>
+                            <span style="margin:0 auto; text-align:center;font-size:30px">
+                                <b>
+                                    <t t-esc="date"/>
+                                </b>
+                            </span>
+                        </div>
                         <br/>
                     </t>
-
+                    <t t-else="">
+                        <div>
+                            <span style="font-size:30px">
+                                <b>
+                                    <t t-esc="date"/>
+                                </b>
+                            </span>
+                        </div>
+                        <br/>
+                    </t>
                     <table class="o_has_total_table table o_main_table table-borderless">
                         <thead t-attf-style="font-size: 24px">
                             <tr>
-                                <th>Rental Lease Id</th>
+                                <th style="text-align: left;">Rental Lease Id</th>
                                 <t t-if="not single_tenant">
-                                    <th>Tenant</th>
+                                    <th style="text-align: left;">Tenant</th>
                                 </t>
-                                <th>Type</th>
-                                <th>Property</th>
-                                <th>Owner</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Amount</th>
-                                <th>State</th>
+                                <th style="text-align: left;">Type</th>
+                                <th style="text-align: left;">Property</th>
+                                <th style="text-align: left;">Owner</th>
+                                <th style="text-align: left;">Start Date</th>
+                                <th style="text-align: left;">End Date</th>
+                                <th style="text-align: center;">Amount</th>
+                                <th style="text-align: center;">State</th>
                             </tr>
                         </thead>
                         <tbody t-attf-style="font-size: 24px">
                             <t t-foreach="data" t-as="line">
                                 <tr>
-                                    <td><span t-esc="line['rental_lease_id']"/></td>
+                                    <td style="text-align: left;">
+                                        <span t-esc="line['rental_lease_id']"/>
+                                    </td>
                                     <t t-if="not single_tenant">
-                                        <td><span t-esc="line['tenant_name']"/></td>
+                                        <td style="text-align: left;">
+                                            <span t-esc="line['tenant_name']"/>
+                                        </td>
                                     </t>
-                                    <td><span t-esc="line['type']"/></td>
-                                    <td><span t-esc="line['property']"/></td>
-                                    <td><span t-esc="line['owner_name']"/></td>
-                                    <td><span t-esc="line['start_date']"/></td>
-                                    <td><span t-esc="line['end_date']"/></td>
-                                    <td><span t-field="currency_id.symbol" /><span t-esc="line['amount']"/></td>
-                                    <td><span t-esc="line['state']"/></td>
+                                    <td>
+                                        <span t-esc="line['type']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['property']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['owner_name']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['start_date']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line['end_date']"/>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <span t-options="{'widget': 'monetary', 'display_currency': currency}"
+                                              t-esc="line['amount']"/>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <span t-esc="line['state']"/>
+                                    </td>
                                 </tr>
                             </t>
                         </tbody>
                     </table>
+                    <xpath expr="//div[contains(@class, 'o_footer')]" position="inside">
+                        <div class="text-right">
+                            Page
+                            <span class="page"/>
+                            /
+                            <span class="topage"/>
+                        </div>
+                    </xpath>
                 </div>
             </t>
         </t>
+
     </template>
 </odoo>
