@@ -14,6 +14,7 @@ class PropertyLeaseReport(models.AbstractModel):
         tenant_name = tenants[0] if single_tenant else False
         currency = self.env.company.currency_id
         date = fields.Datetime.now()
+        company = self.env.company
 
         return {
             'doc_ids': docids,
@@ -23,4 +24,5 @@ class PropertyLeaseReport(models.AbstractModel):
             'single_tenant': single_tenant,
             'tenant_name': tenant_name,
             'date': date,
+            'company':company,
         }

@@ -2,11 +2,36 @@
 <odoo>
     <template id="property_rental_report_template">
         <t t-call="web.html_container">
-
-            <!--            <t t-set="data_report_margin_top" t-value="10"/>-->
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h2 style="font-size:55px">Property Report</h2>
+                    <!-- Company Header -->
+                    <div class="row mb-4" style="display:flex; align-items:flex-start; width:100%; margin-bottom:20px;">
+                        <!-- Logo -->
+                        <div style="flex:0 0 auto; width:120px; margin-right:20px;">
+                            <img t-if="company.logo"
+                                 t-att-src="'data:image/png;base64,%s' % company.logo"
+                                 style="max-height:100px;"/>
+                        </div>
+                        <!-- Company Name & Address -->
+                        <div style="flex:1; text-align:left; font-size:22px; font-weight:bold;">
+                            <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">
+                                <t t-esc="company.name"/>
+                            </div>
+                            <div style="font-size:20px; font-weight:bold;">
+                                <span t-esc="company.street"/>
+                                <t t-if="company.street2">, <t t-esc="company.street2"/></t><br/>
+                                <span t-esc="company.city"/>
+                                <t t-if="company.state_id">, <t t-esc="company.state_id.name"/></t>
+                                <t t-if="company.zip"> - <t t-esc="company.zip"/></t><br/>
+                                <t t-if="company.country_id">
+                                    <span t-esc="company.country_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report Title -->
+                    <h2 style="font-size:55px; text-align:center; margin:20px 0;">Property Report</h2>
+                    <!-- Tenant & Date -->
                     <t t-if="single_tenant">
                         <div style="display:flex; align-items:center; font-size:20px; position:relative; width:100%;">
                             <span style="position:absolute; left:0; font-size:30px">
@@ -15,7 +40,7 @@
                                     <t t-esc="tenant_name"/>
                                 </b>
                             </span>
-                            <span style="margin:0 auto; text-align:center;font-size:30px">
+                            <span style="margin:0 auto; text-align:center; font-size:30px">
                                 <b>
                                     <t t-esc="date"/>
                                 </b>
@@ -97,6 +122,5 @@
                 </div>
             </t>
         </t>
-
     </template>
 </odoo>
