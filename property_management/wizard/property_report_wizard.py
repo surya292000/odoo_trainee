@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import io
 import json
+import base64
 import xlsxwriter
 from odoo.tools import json_default
 from odoo import models, fields
@@ -96,29 +97,60 @@ class RentLeaseReportWizard(models.TransientModel):
         report = data['records']
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet()
-        cell_format = workbook.add_format(
-            {'font_size': '12px', 'align': 'center'})
-        head = workbook.add_format(
-            {'align': 'center', 'bold': True, 'font_size': '20px'})
-        txt = workbook.add_format({'font_size': '10px', 'align': 'center'})
-        sheet.merge_range('B4:S5', 'EXCEL REPORT', head)
-        sheet.write('H11', 'Property', cell_format)
-        sheet.write('I11', 'Owner', cell_format)
-        sheet.write('J11', 'Property Type', cell_format)
-        sheet.write('K11', 'Tenant', cell_format)
-        sheet.write('L11', 'Start Date', cell_format)
-        sheet.write('M11', 'End Date', cell_format)
-        sheet.write('N11', 'Amount', cell_format)
-        sheet.write('O11', 'State', cell_format)
-        for i, row in enumerate(report,start=12):
-            sheet.write(f'H{i}:', str(row['property']), txt)
-            sheet.write(f'I{i}', str(row['owner_name']), txt)
-            sheet.write(f'J{i}', str(row['type']), txt)
-            sheet.write(f'K{i}', str(row['tenant_name']), txt)
-            sheet.write(f'L{i}', str(row['start_date']), txt)
-            sheet.write(f'M{i}', str(row['end_date']), txt)
-            sheet.write(f'N{i}', str(row['amount']), txt)
-            sheet.write(f'O{i}', str(row['state']), txt)
+        cell_format = workbook.add_format({'font_size': 12, 'align': 'center', 'valign': 'vcenter'})
+        head = workbook.add_format({'align': 'center', 'valign': 'vcenter', 'font_size': 12, 'bold': True})
+        date = workbook.add_format(
+            {'num_format': 'dd/mm/yy hh:mm:ss', 'align': 'center', 'valign': 'vcenter', 'font_size': 12, 'bold': True })
+        txt = workbook.add_format({'font_size': 10, 'align': 'center', 'valign': 'vcenter'})
+        currency_format = workbook.add_format({'num_format': '$#,##0.00', 'align': 'right'})
+        format1 = workbook.add_format({'align': 'left', 'valign': 'vcenter', 'font_size': 10})
+        format2 = workbook.add_format({'align': 'right', 'valign': 'vcenter', 'font_size': 10})
+        sheet.merge_range('Q3:T5',
+            f"{self.env.company.name}\n{self.env.company.street or ''}\n{self.env.company.street2 or ''}",cell_format)
+        sheet.merge_range('C5:O6', 'PROPERTY REPORT', head)
+        if self.env.company.logo:
+            image_data = io.BytesIO(base64.b64decode(self.env.company.logo))
+            sheet.insert_image('Q1:T4', "logo.png",{'image_data': image_data, 'x_scale': 0.5, 'y_scale': 0.3})
+        tenants = set([row['tenant_name'] for row in report if row.get('tenant_name')])
+        unique_tenants = len(tenants)
+        if unique_tenants == 1:
+            tenant_name = tenants.pop()
+            sheet.merge_range('C8:G9', f"Tenant: {tenant_name}", head)
+            sheet.merge_range('I8:L9', f" Date: {fields.Datetime.now()}", date)
+            sheet.merge_range('C11:E11', 'Property', cell_format)
+            sheet.merge_range('F11:H11', 'Owner', cell_format)
+            sheet.merge_range('I11:J11', 'Property Type', cell_format)
+            sheet.merge_range('K11:M11', 'Start Date', cell_format)
+            sheet.merge_range('N11:O11', 'End Date', cell_format)
+            sheet.merge_range('P11:Q11', 'Amount', cell_format)
+            sheet.merge_range('R11:S11', 'State', cell_format)
+            for i, row in enumerate(report, start=12):
+                sheet.merge_range(f'C{i}:E{i}', str(row['property']), format1)
+                sheet.merge_range(f'F{i}:H{i}', str(row['owner_name']), txt)
+                sheet.merge_range(f'I{i}:J{i}', str(row['type']), txt)
+                sheet.merge_range(f'K{i}:M{i}', str(row['start_date']), format2)
+                sheet.merge_range(f'N{i}:O{i}', str(row['end_date']), format2)
+                sheet.merge_range(f'P{i}:Q{i}', row['amount'], currency_format)
+                sheet.merge_range(f'R{i}:S{i}', str(row['state']), txt)
+        else:
+            sheet.merge_range('C8:F9',  f" Date: {fields.Datetime.now()}", date)
+            sheet.merge_range('C11:E11', 'Property', cell_format)
+            sheet.merge_range('F11:H11', 'Owner', cell_format)
+            sheet.merge_range('I11:J11', 'Property Type', cell_format)
+            sheet.merge_range('K11:M11', 'Tenant', cell_format)
+            sheet.merge_range('N11:O11', 'Start Date', cell_format)
+            sheet.merge_range('P11:Q11', 'End Date', cell_format)
+            sheet.merge_range('R11:S11', 'Amount', cell_format)
+            sheet.merge_range('T11:U11', 'State', cell_format)
+            for i, row in enumerate(report, start=12):
+                sheet.merge_range(f'C{i}:E{i}', str(row['property']), format1)
+                sheet.merge_range(f'F{i}:H{i}', str(row['owner_name']), txt)
+                sheet.merge_range(f'I{i}:J{i}', str(row['type']), txt)
+                sheet.merge_range(f'K{i}:M{i}', str(row['tenant_name']), txt)
+                sheet.merge_range(f'N{i}:O{i}', str(row['start_date']), format2)
+                sheet.merge_range(f'P{i}:Q{i}', str(row['end_date']), format2)
+                sheet.merge_range(f'R{i}:S{i}', row['amount'], currency_format)
+                sheet.merge_range(f'T{i}:U{i}', str(row['state']), txt)
         workbook.close()
         output.seek(0)
         response.stream.write(output.read())

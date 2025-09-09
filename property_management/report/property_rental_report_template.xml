@@ -3,123 +3,90 @@
     <template id="property_rental_report_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="page">
-                    <!-- Company Header -->
-                    <div class="row mb-4" style="display:flex; align-items:flex-start; width:100%; margin-bottom:20px;">
-                        <!-- Logo -->
-                        <div style="flex:0 0 auto; width:120px; margin-right:20px;">
-                            <img t-if="company.logo"
-                                 t-att-src="'data:image/png;base64,%s' % company.logo"
-                                 style="max-height:100px;"/>
-                        </div>
-                        <!-- Company Name & Address -->
-                        <div style="flex:1; text-align:left; font-size:22px; font-weight:bold;">
-                            <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">
-                                <t t-esc="company.name"/>
+                <t t-name="web.external_layout_standard">
+                    <div class="page">
+                        <h2 style="font-size:55px; text-align:center; margin:20px 0;">Property Report</h2>
+                        <t t-if="single_tenant">
+                            <div style="display:flex; align-items:center; font-size:20px; position:relative; width:100%;">
+                                <span style="position:absolute; left:0; font-size:30px">
+                                    Tenant:
+                                    <b>
+                                        <t t-esc="tenant_name"/>
+                                    </b>
+                                </span>
+                                <span style="margin:0 auto; text-align:center; font-size:30px">
+                                    <b>
+                                        <t t-esc="date"/>
+                                    </b>
+                                </span>
                             </div>
-                            <div style="font-size:20px; font-weight:bold;">
-                                <span t-esc="company.street"/>
-                                <t t-if="company.street2">, <t t-esc="company.street2"/></t><br/>
-                                <span t-esc="company.city"/>
-                                <t t-if="company.state_id">, <t t-esc="company.state_id.name"/></t>
-                                <t t-if="company.zip"> - <t t-esc="company.zip"/></t><br/>
-                                <t t-if="company.country_id">
-                                    <span t-esc="company.country_id.name"/>
-                                </t>
+                            <br/>
+                        </t>
+                        <t t-else="">
+                            <div>
+                                <span style="font-size:30px">
+                                    <b>
+                                        <t t-esc="date"/>
+                                    </b>
+                                </span>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Report Title -->
-                    <h2 style="font-size:55px; text-align:center; margin:20px 0;">Property Report</h2>
-                    <!-- Tenant & Date -->
-                    <t t-if="single_tenant">
-                        <div style="display:flex; align-items:center; font-size:20px; position:relative; width:100%;">
-                            <span style="position:absolute; left:0; font-size:30px">
-                                Tenant:
-                                <b>
-                                    <t t-esc="tenant_name"/>
-                                </b>
-                            </span>
-                            <span style="margin:0 auto; text-align:center; font-size:30px">
-                                <b>
-                                    <t t-esc="date"/>
-                                </b>
-                            </span>
-                        </div>
-                        <br/>
-                    </t>
-                    <t t-else="">
-                        <div>
-                            <span style="font-size:30px">
-                                <b>
-                                    <t t-esc="date"/>
-                                </b>
-                            </span>
-                        </div>
-                        <br/>
-                    </t>
-                    <table class="o_has_total_table table o_main_table table-borderless">
-                        <thead t-attf-style="font-size: 24px">
-                            <tr>
-                                <th style="text-align: left;">Rental Lease Id</th>
-                                <t t-if="not single_tenant">
-                                    <th style="text-align: left;">Tenant</th>
-                                </t>
-                                <th style="text-align: left;">Type</th>
-                                <th style="text-align: left;">Property</th>
-                                <th style="text-align: left;">Owner</th>
-                                <th style="text-align: left;">Start Date</th>
-                                <th style="text-align: left;">End Date</th>
-                                <th style="text-align: center;">Amount</th>
-                                <th style="text-align: center;">State</th>
-                            </tr>
-                        </thead>
-                        <tbody t-attf-style="font-size: 24px">
-                            <t t-foreach="data" t-as="line">
+                            <br/>
+                        </t>
+                        <table class="o_has_total_table table o_main_table table-borderless">
+                            <thead t-attf-style="font-size: 24px">
                                 <tr>
-                                    <td style="text-align: left;">
-                                        <span t-esc="line['rental_lease_id']"/>
-                                    </td>
+                                    <th style="text-align: left;">Rental Lease Id</th>
                                     <t t-if="not single_tenant">
-                                        <td style="text-align: left;">
-                                            <span t-esc="line['tenant_name']"/>
-                                        </td>
+                                        <th style="text-align: left;">Tenant</th>
                                     </t>
-                                    <td>
-                                        <span t-esc="line['type']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['property']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['owner_name']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['start_date']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['end_date']"/>
-                                    </td>
-                                    <td style="text-align: left;">
-                                        <span t-options="{'widget': 'monetary', 'display_currency': currency}"
-                                              t-esc="line['amount']"/>
-                                    </td>
-                                    <td style="text-align: left;">
-                                        <span t-esc="line['state']"/>
-                                    </td>
+                                    <th style="text-align: left;">Type</th>
+                                    <th style="text-align: left;">Property</th>
+                                    <th style="text-align: left;">Owner</th>
+                                    <th style="text-align: left;">Start Date</th>
+                                    <th style="text-align: left;">End Date</th>
+                                    <th style="text-align: center;">Amount</th>
+                                    <th style="text-align: center;">State</th>
                                 </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                    <xpath expr="//div[contains(@class, 'o_footer')]" position="inside">
-                        <div class="text-right">
-                            Page
-                            <span class="page"/>
-                            /
-                            <span class="topage"/>
-                        </div>
-                    </xpath>
-                </div>
+                            </thead>
+                            <tbody t-attf-style="font-size: 24px">
+                                <t t-foreach="data" t-as="line">
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <span t-esc="line['rental_lease_id']"/>
+                                        </td>
+                                        <t t-if="not single_tenant">
+                                            <td style="text-align: left;">
+                                                <span t-esc="line['tenant_name']"/>
+                                            </td>
+                                        </t>
+                                        <td>
+                                            <span t-esc="line['type']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['property']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['owner_name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['start_date']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['end_date']"/>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <span t-options="{'widget': 'monetary', 'display_currency': currency}"
+                                                  t-esc="line['amount']"/>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <span t-esc="line['state']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
             </t>
         </t>
     </template>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Property Management",
-    'depends': ['base', 'mail', 'sale'],
+    'depends': ['base', 'mail', 'sale', 'website'],
     'data': ["security/property_management_groups.xml",
              "security/property_management_security.xml",
              "security/ir.model.access.csv",
