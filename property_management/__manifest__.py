@@ -22,6 +22,8 @@
              "views/property_rental_lease_views.xml",
              "views/property_rental_lease_lines_views.xml",
              "views/res_partner_views.xml",
+             "views/web_menu.xml",
+             "views/website_template.xml",
              "views/property_management_menu.xml"
              ],
     'assets': {

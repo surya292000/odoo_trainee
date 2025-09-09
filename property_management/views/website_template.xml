@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Customer Create Form Template -->
+        <template id="customer_form_template" name="Customer Form">
+            <t t-call="website.layout">
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-center">Rental Record</h3>
+                                    <form action="/website/customer/create" method="post">
+                                        <div class="mb-3">
+                                            <label class="form-label">Property</label>
+                                            <input type="text" name="property_ids" required="required"
+                                                   class="form-control"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Rental Type</label>
+                                            <input type="text" name="rental_type" class="form-control"/>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="date" name="start_date" class="form-control"/>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">End Date</label>
+                                            <input type="date" name="end_date" class="form-control"/>
+                                        </div>
+                                        <div class="mb-5">
+                                            <label class="form-label">Customer</label>
+                                            <input type="Selection" name="tenant_id" class="form-control"/>
+                                        </div>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+        <!-- Success Page -->
+        <template id="customer_success_template" name="Customer Created">
+            <t t-call="website.layout">
+                <div class="container">
+                    <h3>Property Rented Successfully!</h3>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
