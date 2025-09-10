@@ -29,6 +29,7 @@
     'assets': {
     'web.assets_backend': [
         'property_management/static/src/js/action_manager.js',
+        'property_management/static/src/js/custom_website.js',
     ],},
 
     'application': True,
