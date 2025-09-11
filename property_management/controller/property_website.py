@@ -24,6 +24,7 @@ class WebFormController(http.Controller):
         start_date = post.get('start_date')
         end_date = post.get('end_date')
         quantity = post.get('total_days')
+        print(quantity,'quantity')
         if not property_val:
             return request.redirect('/webform?error=Please select a property')
         if not rental_type:
@@ -43,33 +44,6 @@ class WebFormController(http.Controller):
             'lease': lease,
         })
 
-    @route('/website/submit', type='json', auth='public', website=True, )
-    def request_submit(self, **post):
-        order = []
-        for recs in post['data']:
-            if recs['operation'] == 'purchase order':
-                dicts = {'product_id': int(recs.get('material')),
-                         'material_qty': int(recs.get('quantity')),
-                         'operation_type': recs.get('operation')}
-            else:
-                dicts = {
-                    'product_id': int(recs.get('material')),
-                    'material_qty': int(recs.get('quantity')),
-                    'operation_type': recs.get('operation'),
-                    'src_location_id': int(recs.get('source')),
-                    'dest_location_id': int(recs.get('destination'))
-                }
-            order.append(dicts)
-        record = request.env['material.request'].sudo().create({
-            'employee_id': int(post.get('partner')),
-            'date': post.get('date'),
-            'material_order_ids': [Command.create(rec) for rec in order],
-        })
-        record.state = 'submitted'
-        user = request.env['res.users'].sudo().browse(int(post.get('partner')))
-        if user.email:
-            template = request.env.ref(
-                'material_request.material_mail_template')
-            template.send_mail(record.id, force_send=True)
-        return record.reference_no
+
+
 

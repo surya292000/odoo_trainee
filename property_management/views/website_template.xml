@@ -1,7 +1,7 @@
 <odoo>
     <template id="customer_form_template" name="Customer Web Form">
         <t t-call="website.layout">
-            <div class="container mt-5">
+            <div class="container mt-5" id="wrap">
                 <h2>Rental/Lease Booking</h2>
                 <form action="/website/customer/create" method="post" class="form-group">
                     <!--                    <div class="form-group mb-3">-->
@@ -34,6 +34,10 @@
                         <label for="end_date">End Date</label>
                         <input type="date" name="end_date" class="form-control"/>
                     </div>
+                    <div class="form-group mb-3">
+                        <label for="total_days">Quantity</label>
+                        <input type="integer" name="quantity" class="form-control"/>
+                    </div>
                     <div class="col-12">
                         <table class="table table-bordered mt-3" id="material_table">
                             <thead>
@@ -59,7 +63,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control total_cost" name="quantity"
+                                        <input type="number" class="form-control total_cost" name="total_days"
                                                id="quantity" value="quantity" placeholder="Quantity"/>
                                     </td>
                                     <td>
