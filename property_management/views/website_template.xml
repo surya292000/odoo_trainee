@@ -4,39 +4,13 @@
             <div class="container mt-5" id="wrap">
                 <h2>Rental/Lease Booking</h2>
                 <form action="/website/customer/create" method="post" class="form-group">
-                    <!--                    <div class="form-group mb-3">-->
-                    <!--                        <label for="property_id">Property</label>-->
-                    <!--                        <select name="property_id" required="1" class="form-control">-->
-                    <!--                            <option value="">Select Property</option>-->
-                    <!--                            <t t-foreach="properties" t-as="prop">-->
-                    <!--                                <option t-att-value="prop.id">-->
-                    <!--                                    <t t-esc="prop.name"/>-->
-                    <!--                                </option>-->
-                    <!--                            </t>-->
-                    <!--                        </select>-->
-                    <!--                    </div>-->
-                    <!--                    <div class="form-group mb-3">-->
-                    <!--                        <label for="rental_type">Rental Type</label>-->
-                    <!--                        <select name="rental_type" required="1" class="form-control">-->
-                    <!--                            <option value="">Select Rental Type</option>-->
-                    <!--                            <t t-foreach="rental_types" t-as="rtype">-->
-                    <!--                                <option t-att-value="rtype[0]">-->
-                    <!--                                    <t t-esc="rtype[1]"/>-->
-                    <!--                                </option>-->
-                    <!--                            </t>-->
-                    <!--                        </select>-->
-                    <!--                    </div>-->
                     <div class="form-group mb-3">
                         <label for="start_date">Start Date</label>
-                        <input type="date" name="start_date" class="form-control"/>
+                        <input type="date" id="start_date" name="start_date" class="form-control"/>
                     </div>
                     <div class="form-group mb-3">
                         <label for="end_date">End Date</label>
-                        <input type="date" name="end_date" class="form-control"/>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="total_days">Quantity</label>
-                        <input type="integer" name="quantity" class="form-control"/>
+                        <input type="date" id="end_date" name="end_date" class="form-control"/>
                     </div>
                     <div class="col-12">
                         <table class="table table-bordered mt-3" id="material_table">
@@ -63,8 +37,12 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control total_cost" name="total_days"
-                                               id="quantity" value="quantity" placeholder="Quantity"/>
+                                        <input type="number"
+                                               class="form-control total_cost total_days"
+                                               name="total_days"
+                                               value=""
+                                               placeholder="Quantity"
+                                               min="0" step="1"/>
                                     </td>
                                     <td>
                                         <select name="rental_type" required="1" class="form-control">
@@ -76,26 +54,6 @@
                                             </t>
                                         </select>
                                     </td>
-                                    <!--                                    <td>-->
-                                    <!--                                        <select name="source" class="form-control s_website_form_input">-->
-                                    <!--                                            <option value="">Select Source Location</option>-->
-                                    <!--                                            <t t-foreach="locations" t-as="location">-->
-                                    <!--                                                <option t-att-value="location.id">-->
-                                    <!--                                                    <t t-esc="location.complete_name"/>-->
-                                    <!--                                                </option>-->
-                                    <!--                                            </t>-->
-                                    <!--                                        </select>-->
-                                    <!--                                    </td>-->
-                                    <!--                                    <td>-->
-                                    <!--                                        <select name="destination" class="form-control s_website_form_input">-->
-                                    <!--                                            <option value="">Select Destination Location</option>-->
-                                    <!--                                            <t t-foreach="locations" t-as="location">-->
-                                    <!--                                                <option t-att-value="location.id">-->
-                                    <!--                                                    <t t-esc="location.complete_name"/>-->
-                                    <!--                                                </option>-->
-                                    <!--                                            </t>-->
-                                    <!--                                        </select>-->
-                                    <!--                                    </td>-->
                                     <td>
                                         <button type="button"
                                                 class="btn fa fa-trash-o remove_line text-danger"></button>
@@ -112,7 +70,7 @@
                         </button>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary custom_create">Submit</button>
                 </form>
             </div>
         </t>
