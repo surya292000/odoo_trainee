@@ -3,15 +3,56 @@
         <t t-call="website.layout">
             <div class="container mt-5" id="wrap">
                 <h2>Rental/Lease Booking</h2>
+
+                <!-- Modal for messages -->
+                <div id="modal_msg" class="modal" style="display:none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"></h5>
+                                <button type="button" class="btn-close" id="dismiss" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Please correct the issue and try again.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="dismiss">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <form action="/website/customer/create" method="post" class="form-group">
+
+                    <div class="form-group mb-3" style="display:none;">
+                        <span id="tenant"><t t-esc="request.env.user.partner_id.name"/></span>
+                    </div>
+
                     <div class="form-group mb-3">
                         <label for="start_date">Start Date</label>
-                        <input type="date" id="start_date" name="start_date" class="form-control"/>
+                        <input type="date" id="start_date" name="start_date" class="form-control date"/>
                     </div>
                     <div class="form-group mb-3">
                         <label for="end_date">End Date</label>
-                        <input type="date" id="end_date" name="end_date" class="form-control"/>
+                        <input type="date" id="end_date" name="end_date" class="form-control date"/>
                     </div>
+
+                    <div class="form-group mb-3">
+                        <span id="days_count" class="badge bg-info"></span>
+                    </div>
+
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label for="rental_type_global">Rental Type</label>-->
+<!--                        <select name="rental_type_global" class="form-control select_box_test">-->
+<!--                            <option value="">Select Rental Type</option>-->
+<!--                            <t t-foreach="rental_types" t-as="rtype">-->
+<!--                                <option t-att-value="rtype[0]">-->
+<!--                                    <t t-esc="rtype[1]"/>-->
+<!--                                </option>-->
+<!--                            </t>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
                     <div class="col-12">
                         <table class="table table-bordered mt-3" id="material_table">
                             <thead>
@@ -19,15 +60,16 @@
                                     <th>Property *</th>
                                     <th>Quantity *</th>
                                     <th>Rental Type *</th>
-                                    <!--                                    <th>Amount *</th>-->
-                                    <!--                                    <th>Destination Location *</th>-->
+                                    <th>Owner</th>
+                                    <th>Amount</th>
+                                    <th>Sub Amount</th>
                                     <th width="5%"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="property_order_line">
+                                <tr class="property_order_line" >
                                     <td>
-                                        <select name="property_id" required="1" class="form-control">
+                                        <select name="property_id" id="property_id" required="1" class="form-control property_name">
                                             <option value="">Select Property</option>
                                             <t t-foreach="properties" t-as="prop">
                                                 <option t-att-value="prop.id">
@@ -45,7 +87,7 @@
                                                min="0" step="1"/>
                                     </td>
                                     <td>
-                                        <select name="rental_type" required="1" class="form-control">
+                                        <select name="rental_type" required="1" class="form-control select_rental_type">
                                             <option value="">Select Rental Type</option>
                                             <t t-foreach="rental_types" t-as="rtype">
                                                 <option t-att-value="rtype[0]">
@@ -55,6 +97,15 @@
                                         </select>
                                     </td>
                                     <td>
+                                        <span class="owner"></span>
+                                    </td>
+                                    <td>
+                                        <span class="amount"></span>
+                                    </td>
+                                    <td>
+                                        <span class="sub_amount"></span>
+                                    </td>
+                                    <td>
                                         <button type="button"
                                                 class="btn fa fa-trash-o remove_line text-danger"></button>
                                     </td>
@@ -62,6 +113,7 @@
                             </tbody>
                         </table>
                     </div>
+
                     <!-- Add Material Button -->
                     <div class="col-12 text-end">
                         <button type="button" class="btn btn-info add_total_project">
@@ -75,19 +127,17 @@
             </div>
         </t>
     </template>
+
     <template id="customer_success_template" name="Customer Success">
         <t t-call="website.layout">
             <section class="container py-5 text-center">
                 <h3>Rental Record Created Successfully!</h3>
-                <p>Your rental record for
-                    <b>
-                        <t t-esc="lease.property_ids[0].property_id.name"/>
-                    </b>
-                    has been submitted.
-                </p>
+                <p>Your rental record has been submitted successfully.</p>
+                <t t-if="lease and lease.property_ids">
+                    <p>Property: <b><t t-esc="lease.property_ids[0].property_id.name"/></b></p>
+                </t>
                 <a href="/webform" class="btn btn-primary mt-3">Back to Form</a>
             </section>
         </t>
     </template>
 </odoo>
-
