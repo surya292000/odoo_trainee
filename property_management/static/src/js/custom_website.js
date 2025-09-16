@@ -9,7 +9,6 @@ import { useRef, useState } from "@odoo/owl";
 publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
    selector: "#wrap",
    events: {
-       'change .operation': '_onChangeType',
        'change #start_date': '_onChangeDates',
        'change #end_date': '_onChangeDates',
        'click .add_total_project': '_onClickAddMaterial',
@@ -18,7 +17,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
        'change select[name="property_id"]': 'onChangeProperty',
        'change .property_name': '_onClickRow',
        'change .select_rental_type': '_onClickCalculate',
-//       'change .date': '_onClickCalculate',
        'click #dismiss': '_onCloseClick',
    },
 
@@ -33,7 +31,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
    },
 
    _onChangeDates: function() {
-//       console.log('date')
        var modal_div = this.el.querySelector('#modal_msg');
        var msg = this.el.querySelector('.modal-title');
        var start_date = new Date($('#start_date').val())
@@ -57,7 +54,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
 
            $('#material_table tbody tr.property_order_line').each(function () {
-//           console.log('dfghjkl;lkbvbnm,')
                $(this).find('input[name="total_days"]').val(diffDays);
            });
 
@@ -85,7 +81,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
    },
 
    _onClickAddMaterial: function (ev) {
-//       console.log("gyduy")
        var modal_div = this.el.querySelector('#modal_msg');
        var msg = this.el.querySelector('.modal-title');
        var rows = $('#material_table tbody tr.property_order_line');
@@ -114,7 +109,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                elem.remove();
            }
            else{
-//           console.log(elem)
                $new_row.insertBefore(rows.eq(0));
                $new_row.insertBefore(rows.eq(0)).find('input[name="total_days"]').val(diffDays);
                $new_row.insertBefore(rows.eq(0)).find('.owner').text(" ");
@@ -137,31 +131,19 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
    _onClickCalculate :  async function () {
            const data = await rpc('/property-property', {})
             var $table = this.$el.find('#material_table tbody tr')
-//            console.log('$table',$table)
             var from_date = new Date(this.$el.find('#start_date').val())
-//            console.log('from_date',from_date)
             var to_date = new Date(this.$el.find('#end_date').val())
-//            console.log('to_date',to_date)
             var type = this.$el.find('.select_rental_type').val();
-//            console.log('type',type)
             var total_days = (to_date - from_date) / 86_400_000;
             $table.each(function(index, elem){
                 var property = $(elem).find('#property_id').val()
-//                console.log('dfghjkl')
                 var span_owner = $(elem).find('.owner');
-//                console.log('span_owner',span_owner)
                 var span_amount = $(elem).find('.amount');
-//                console.log('span_amount',span_amount)
                 var span_sub_amount = $(elem).find('.sub_amount')
-//                console.log('span_sub_amount',span_sub_amount)
                 if (property){
-//                console.log('hai')
-//                console.log('tppp',type)
+                console.log('hai')
                     span_owner.text(data[property].owner);
-                    console.log('owwww',span_owner.text(data[property].owner))
-                    if(type=='rent'){
-//                    console.log('hello')
-//                    console.log('amou',data[property].rent)
+                    if(type=='Rent'){
                         span_amount.text(data[property].rent);
                         span_sub_amount.text(data[property].rent * total_days);
                          }
@@ -185,16 +167,9 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                 var span_owner = current_row.closest('tr').find('.owner');
                 var span_amount = current_row.closest('tr').find('.amount');
                 var span_sub_amount = current_row.closest('tr').find('.sub_amount');
-//                var quantity = (current_row.closest('tr').find('.total_days');
-//                console.log(quantity, 'quantity');
-
-                console.log(property,'property')
                 if (property){
                     span_owner.text(data[property].owner);
-//                    quantity.text(total_days)
-                    console.log(type,'type')
                     if(type=='rent'){
-                    console.log('dfghjk')
                         span_amount.text(data[property].rent);
                         span_sub_amount.text(data[property].rent * total_days)
                          }
@@ -203,19 +178,13 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                              span_sub_amount.text(data[property].lease * total_days)}
                 }
            },
-
-
    _onClickSubmit: async function (ev) {
-//       console.log('submit2');
-//       console.log('sdfghjkl')
        ev.preventDefault();
-        console.log('submit')
        var modal_div = this.el.querySelector('#modal_msg');
        var msg = this.el.querySelector('.modal-title');
-       console.log('zdrtgfvghnjkjhgfdsdfg')
        var start_date = $('#start_date').val();
        var end_date = $('#end_date').val();
-        console.log('startttttttt')
+       var type =  this.$el.find('.select_rental_type').val();
        const property_ids = [];
        let data =[];
        if(start_date.length==0 || end_date.length==0){
@@ -241,7 +210,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
 
                data.push({
                property_id: property_id,
-               rental_type: rental_type,
                })
                console.log('data',data)
 
@@ -260,7 +228,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                    property_ids.push({
                        property: property_id,
 //                       quantity: quantity,
-                       rental_type: rental_type,
                    });
                }
            }
@@ -278,23 +245,23 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
        }
 
        try {
-//       }
-           let result = await rpc("/material/submit", {
-               'abc': start_date,
-               'data': data,
-//               'end_date': end_date,
-//               'property_ids': property_ids
-           });
-           console.log(result, 'rpc result');
+            let result = await rpc("/material/submit", {
+                start: start_date,
+                end: end_date,
+                type: type,
+                data: data,
+            });
+            console.log(result, 'rpc result');
 
-           if (result.success) {
-               alert("Request submitted! ID: " + result.record_id);
-           } else {
-               alert("Submission failed: " + (result.error || "Unknown error"));
-           }
-       } catch (error) {
-           alert("Submission failed: " + error.message);
-       }
+            if (result.status === "success") {
+                window.location.href = "/customer/success?lease_id";
+            } else {
+                alert(result.message || "Submission failed");
+            }
+        } catch (error) {
+            alert("Submission failed: " + error.message);
+        }
+
    },
 
    onChangeProperty: async function(ev) {
@@ -320,8 +287,4 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
            }
        });
    },
-
-   _onChangeType: function (ev) {
-       console.log('Property type changed');
-   }
 });

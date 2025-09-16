@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
    <record id="website_booking_menu" model="website.menu">
-       <field name="name">Property Rental</field>
-       <field name="url">/webform</field>
+       <field name="name">Property Booking</field>
+       <field name="url">/web/list</field>
        <field name="parent_id" ref="website.main_menu"/>
        <field name="sequence" type="int">90</field>
    </record>

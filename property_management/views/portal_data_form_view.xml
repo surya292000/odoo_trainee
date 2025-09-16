@@ -1,0 +1,21 @@
+<odoo>
+    <template id="customer_form_template" name="Customer Web Form">
+        <t t-call="website.layout">
+            <div class="o_portal_my_doc">
+            <h3><span t-field="name"/></h3>
+            <p><strong>Author:</strong> <span t-field="start_date"/></p>
+            <p><strong>Description:</strong> <span t-field="end_date"/></p>
+            <p><strong>Condition:</strong> <span t-field="amount"/></p>
+
+            <a class="btn btn-secondary mt-3" href="/web/list">Back to list</a>
+        </div>
+        </t>
+    </template>
+</odoo>
+
+
+<!--<template id="portal_my_contribution_detail" name="Contribution Detail">-->
+<!--    <t t-call="portal.portal_layout">-->
+<!--        -->
+<!--    </t>-->
+<!--</template>-->

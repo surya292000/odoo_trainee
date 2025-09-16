@@ -15,14 +15,22 @@ class PropertyPortal(CustomerPortal):
     def portal_property(self, search=None, search_in='All'):
         searchbar_inputs = {
             'All': {'label': 'All', 'input': 'All', 'domain': []},
-            'Property': {'label': 'Property', 'input': 'Property', 'domain': [('property_ids.property_id.name', 'ilike', search)]},
-            'Rental Type': {'label': 'Rental Type', 'input': 'Rental Type', 'domain': [('rental_type', 'ilike', search)]},
+            'Property': {
+                'label': 'Property',
+                'input': 'Property',
+                'domain': [('property_ids.property_id.name', 'ilike', search)] if search else []
+            },
+            'Rental Type': {
+                'label': 'Rental Type',
+                'input': 'Rental Type',
+                'domain': [('rental_type', 'ilike', search)] if search else []
+            },
         }
 
         search_domain = searchbar_inputs.get(search_in, searchbar_inputs['All'])['domain']
         domain = [('tenant_id', '=', request.env.user.partner_id.id)] + search_domain
 
-        properties = request.env['property.rental.lease'].sudo().search(domain)
+        properties = request.env['property.rental.lease'].search(domain)
 
         return request.render('property_management.portal_my_home_property_views', {
             'property': properties,

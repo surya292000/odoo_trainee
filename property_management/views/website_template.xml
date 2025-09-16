@@ -23,9 +23,12 @@
                 </div>
 
                 <form action="/website/customer/create" method="post" class="form-group">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
                     <div class="form-group mb-3" style="display:none;">
-                        <span id="tenant"><t t-esc="request.env.user.partner_id.name"/></span>
+                        <span id="tenant">
+                            <t t-esc="request.env.user.partner_id.name"/>
+                        </span>
                     </div>
 
                     <div class="form-group mb-3">
@@ -41,17 +44,17 @@
                         <span id="days_count" class="badge bg-info"></span>
                     </div>
 
-<!--                    <div class="form-group mb-3">-->
-<!--                        <label for="rental_type_global">Rental Type</label>-->
-<!--                        <select name="rental_type_global" class="form-control select_box_test">-->
-<!--                            <option value="">Select Rental Type</option>-->
-<!--                            <t t-foreach="rental_types" t-as="rtype">-->
-<!--                                <option t-att-value="rtype[0]">-->
-<!--                                    <t t-esc="rtype[1]"/>-->
-<!--                                </option>-->
-<!--                            </t>-->
-<!--                        </select>-->
-<!--                    </div>-->
+                    <div class="form-group mb-3">
+                        <label for="rental_type_global">Rental Type</label>
+                        <select name="rental_type" class="form-control select_rental_type">
+                            <option value="">Select Rental Type</option>
+                            <t t-foreach="rental_types" t-as="rtype">
+                                <option t-att-value="rtype[0]">
+                                    <t t-esc="rtype[1]"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
 
                     <div class="col-12">
                         <table class="table table-bordered mt-3" id="material_table">
@@ -59,7 +62,7 @@
                                 <tr>
                                     <th>Property *</th>
                                     <th>Quantity *</th>
-                                    <th>Rental Type *</th>
+                                    <!--                                    <th>Rental Type *</th>-->
                                     <th>Owner</th>
                                     <th>Amount</th>
                                     <th>Sub Amount</th>
@@ -67,9 +70,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="property_order_line" >
+                                <tr class="property_order_line">
                                     <td>
-                                        <select name="property_id" id="property_id" required="1" class="form-control property_name">
+                                        <select name="property_id" id="property_id" required="1"
+                                                class="form-control property_name">
                                             <option value="">Select Property</option>
                                             <t t-foreach="properties" t-as="prop">
                                                 <option t-att-value="prop.id">
@@ -85,16 +89,6 @@
                                                value=""
                                                placeholder="Quantity"
                                                min="0" step="1"/>
-                                    </td>
-                                    <td>
-                                        <select name="rental_type" required="1" class="form-control select_rental_type">
-                                            <option value="">Select Rental Type</option>
-                                            <t t-foreach="rental_types" t-as="rtype">
-                                                <option t-att-value="rtype[0]">
-                                                    <t t-esc="rtype[1]"/>
-                                                </option>
-                                            </t>
-                                        </select>
                                     </td>
                                     <td>
                                         <span class="owner"></span>
@@ -134,10 +128,59 @@
                 <h3>Rental Record Created Successfully!</h3>
                 <p>Your rental record has been submitted successfully.</p>
                 <t t-if="lease and lease.property_ids">
-                    <p>Property: <b><t t-esc="lease.property_ids[0].property_id.name"/></b></p>
+                    <p>Property:
+                        <b>
+                            <t t-esc="lease.property_ids[0].property_id.name"/>
+                        </b>
+                    </p>
                 </t>
                 <a href="/webform" class="btn btn-primary mt-3">Back to Form</a>
+                <a href="/web/list" class="btn btn-primary mt-3">Back</a>
             </section>
+        </t>
+    </template>
+
+    <template id='property_record_list_view' name="record list view">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <a href="/webform" class="btn btn-primary mt-3">Create</a>
+                <div class="col-12">
+                    <table class="table table-bordered mt-3" id="material_table">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Invoice Number</th>
+                                <th class="text-center">Property</th>
+                                <th class="text-center">Start Date</th>
+                                <th class="text-center">End Date</th>
+                                <th class="text-end">Rental Type</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="property" t-as="record">
+                            <tr>
+                                <td class="text-left">
+                                    <span t-field="record.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <t t-foreach="record.property_ids" t-as="line">
+                                        <span t-field="line.property_id"/>
+                                        <br/>
+                                    </t>
+                                </td>
+
+                                <td class='text-center'>
+                                    <span t-field="record.start_date"/>
+                                </td>
+                                <td class='text-center'>
+                                    <span t-field="record.end_date"/>
+                                </td>
+                                <td class='text-end'>
+                                    <span t-field="record.rental_type"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </div>
         </t>
     </template>
 </odoo>
