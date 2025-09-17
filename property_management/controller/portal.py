@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal
@@ -39,3 +40,11 @@ class PropertyPortal(CustomerPortal):
             'search_in': search_in,
             'searchbar_inputs': searchbar_inputs,
         })
+
+    @http.route(['/my/property_order/<int:order_id>'], type='http', auth="user", website=True)
+    def portal_order_page(self, order_id):
+        property_order = request.env['property.rental.lease'].browse(order_id)
+        values = {'order': property_order,'page_name': 'properties'}
+        return request.render('property_management.property_order_portal_template', values)
+
+

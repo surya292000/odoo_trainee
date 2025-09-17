@@ -4,8 +4,6 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 import { renderToElement } from "@web/core/utils/render";
 import { useRef, useState } from "@odoo/owl";
 
-//console.log("tfd")
-
 publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
    selector: "#wrap",
    events: {
@@ -106,7 +104,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                } else {
                    alert("Fill the previous row");
                }
-               elem.remove();
            }
            else{
                $new_row.insertBefore(rows.eq(0));
@@ -227,7 +224,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                else{
                    property_ids.push({
                        property: property_id,
-//                       quantity: quantity,
                    });
                }
            }

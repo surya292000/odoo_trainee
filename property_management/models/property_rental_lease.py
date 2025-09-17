@@ -7,7 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 class PropertyRentalLease(models.Model):
     _name = "property.rental.lease"
     _description = "Rented/Lease"
-    _inherit = 'mail.thread'
+    _inherit = ['mail.thread','mail.activity.mixin','portal.mixin']
 
     name = fields.Char(string='reference', readonly="1", default=lambda self: _('New'))
     property_ids = fields.One2many("property.rental.lease.lines",
@@ -69,6 +69,11 @@ class PropertyRentalLease(models.Model):
     def _compute_payment_due_date(self):
         for record in self:
             record.payment_due_date = record.end_date + timedelta(days=1) if record.end_date else False
+
+    def _compute_access_url(self):
+        super()._compute_access_url()
+        for order in self:
+            order.access_url = f'/my/property_order/{order.id}'
 
     @api.depends('payment_due_date')
     def _compute_archive_date(self):

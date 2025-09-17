@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from pyasn1.codec.streaming import peekIntoStream
-
 from odoo import http, Command
 from odoo.http import request, route
 
@@ -38,6 +36,7 @@ class WebFormController(http.Controller):
 
     @http.route('/my/record/invoice', type='http', auth='user', website=True)
     def display_order_form(self, **kwargs):
+        partner = request.env.user.partner_id
 
         pass
 
@@ -74,7 +73,6 @@ class WebFormController(http.Controller):
         property_id = int(property_val)
         lease = request.env['property.rental.lease'].sudo().create({
             'tenant_id': partner.id,
-            # 'rental_type': rental_type,
             'start_date': start_date,
             'end_date': end_date,
             'property_ids': [Command.create({'property_id': property_id})],
@@ -96,8 +94,6 @@ class WebFormController(http.Controller):
                 'lease': prop.legal_amount or 0,
                 'name': prop.name or '',
             }
-
-        # print('Property data:', property_data)
         return property_data
 
     @http.route('/material/submit', type='json', auth='public', website=True, csrf=False)
@@ -112,10 +108,7 @@ class WebFormController(http.Controller):
             type = post.get('type')
         if not data:
             data = post.get('data')
-
         property_id = [val.get('property_id') for val in data if 'property_id' in val]
-        print(property_id,'property_id')
-
         if not property_id:
             return {"status": "error", "message": "No property selected"}
 

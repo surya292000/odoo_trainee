@@ -33,11 +33,11 @@
 
                     <div class="form-group mb-3">
                         <label for="start_date">Start Date</label>
-                        <input type="date" id="start_date" name="start_date" class="form-control date"/>
+                        <input type="date" id="start_date" name="start_date" class="form-control date" style="width:200px"/>
                     </div>
                     <div class="form-group mb-3">
                         <label for="end_date">End Date</label>
-                        <input type="date" id="end_date" name="end_date" class="form-control date"/>
+                        <input type="date" id="end_date" name="end_date" class="form-control date" style="width: 200px"/>
                     </div>
 
                     <div class="form-group mb-3">
@@ -46,7 +46,7 @@
 
                     <div class="form-group mb-3">
                         <label for="rental_type_global">Rental Type</label>
-                        <select name="rental_type" class="form-control select_rental_type">
+                        <select name="rental_type" class="form-control select_rental_type" style="width: 200px">
                             <option value="">Select Rental Type</option>
                             <t t-foreach="rental_types" t-as="rtype">
                                 <option t-att-value="rtype[0]">
@@ -62,7 +62,6 @@
                                 <tr>
                                     <th>Property *</th>
                                     <th>Quantity *</th>
-                                    <!--                                    <th>Rental Type *</th>-->
                                     <th>Owner</th>
                                     <th>Amount</th>
                                     <th>Sub Amount</th>

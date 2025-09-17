@@ -23,16 +23,6 @@
             </t>
         </div>
     </template>
-<!--    <template id="property_portal_add_notes"-->
-<!--              inherit_id="property_management.property_portal_content"-->
-<!--              name="Add Notes to Property Portal">-->
-<!--        <xpath expr="//div[@class='container mt-4']/h3" position="after">-->
-<!--            <div t-if="record.notes" class="mt-2">-->
-<!--                <strong>Notes:</strong>-->
-<!--                <span t-field="record.notes"/>-->
-<!--            </div>-->
-<!--        </xpath>-->
-<!--    </template>-->
 
     <!-- Property List View -->
     <template id="portal_my_home_property_views" name="My Property Records">
@@ -53,14 +43,11 @@
                 </thead>
                 <t t-foreach="property" t-as="record">
                     <tr>
-<!--                        <a t-attf-href="/webform">-->
-                        <td class="text-left">
-                             <a t-attf-href="'my/orders/'">
-                            <span t-field="record.name"/>
-<!--                                 <t t-set="url" t-value="'/my/invoices'"/>-->
-                             </a>
+                        <td>
+                            <a t-att-href="record.get_portal_url()">
+                                <t t-out="record.name"/>
+                            </a>
                         </td>
-<!--                        </a>-->
                         <td class='text-left'>
                             <t t-foreach="record.property_ids" t-as="line">
                                 <span t-field="line.property_id"/>
@@ -82,6 +69,72 @@
             </t>
         </t>
     </template>
+
+<!--     template for property order form view-->
+
+    <template id="property_order_portal_template"
+              name="Property Order Portal"
+              inherit_id="portal.portal_sidebar"
+              primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="before">
+            <div class="o_portal_breadcrumbs mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a t-att-href="'/my'">My Account</a>
+                    </li>
+                    <!-- Property Orders list -->
+                    <li class="breadcrumb-item">
+                        <a t-att-href="'/property'">My Properties</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <t t-esc="order.name"/>
+                    </li>
+                </ol>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <div class="row o_portal_sale_sidebar">
+                <div class="col-12">
+                    <h2>Property Order - <t t-esc="order.name"/></h2>
+                    <table class="table table-sm" id="properties_order_table">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Tenant</th>
+                                <th class="text-end">Quantity</th>
+                                <th class="text-end">Amount</th>
+                                <th class="text-end">Sub-Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="order.property_ids" t-as="line">
+                                <tr>
+                                    <td><span t-field="line.property_id.name"/></td>
+                                    <td>
+                                        <t t-esc="line.rental_id.tenant_id.name if line.rental_id.tenant_id else ''"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="line.amount"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="line.amount * line.quantity"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr class="is-subtotal text-end">
+                                <td colspan="99">
+                                    <strong>Total</strong>
+                                    <span t-out="order.total_amount"
+                                          t-options='{"widget": "monetary", "display_currency": order.company_id.currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
 </odoo>
-
-

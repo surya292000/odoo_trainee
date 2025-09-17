@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Property Management",
-    'depends': ['base', 'mail', 'sale', 'website', 'portal'],
+    'depends': ['base', 'mail', 'sale', 'website', 'portal', 'website_sale'],
     'data': ["security/property_management_groups.xml",
              "security/property_management_security.xml",
              "security/ir.model.access.csv",
@@ -25,12 +25,16 @@
              "views/web_menu.xml",
              "views/website_template.xml",
              "views/website_portal.xml",
+             "views/snippets/category_template.xml",
+             "views/snippets/category_template.xml",
              "views/property_management_menu.xml"
              ],
     'assets': {
     'web.assets_frontend': [
         'property_management/static/src/js/action_manager.js',
         'property_management/static/src/js/custom_website.js',
+        "property_management/static/src/js/snippet.js",
+        "property_management/static/src/xml/snippet.xml"
     ],},
 
     'application': True,
