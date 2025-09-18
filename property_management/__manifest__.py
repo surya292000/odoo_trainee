@@ -27,6 +27,7 @@
              "views/website_portal.xml",
              "views/snippets/category_template.xml",
              "views/snippets/category_template.xml",
+             "views/property_info_template.xml",
              "views/property_management_menu.xml"
              ],
     'assets': {

@@ -1,24 +1,26 @@
 from odoo import http
 from odoo.http import request
 
-class WebsiteProduct(http.Controller):
-    @http.route('/get_product_categories', auth="public", type='json',
-                website=True)
+class WebsiteProperty(http.Controller):
+
+    @http.route('/get_product_categories', auth="public", type='json', website=True)
     def get_product_category(self):
-        """Get the website categories for the snippet."""
-        public_categs = request.env[
-            'property.details'].sudo().search_read(
-            [('owner_id', '=', False)], fields=['name','property_image', 'id']
+        """Get the properties for the snippet."""
+        properties = request.env['property.details'].sudo().search_read(
+            [('owner_id', '!=', False)], fields=['name', 'property_image', 'id'], order= 'built_date desc'
         )
+        # return products, unique_categories
+
+        return {'categories': properties}
+
+    @http.route(['/property/details/<int:property_id>'], auth="public", type='http', website=True)
+    def get_property_details(self, property_id, **kwargs):
+        """Property details page"""
+        property_rec = request.env['property.details'].sudo().browse(property_id)
+        if not property_rec.exists():
+            return request.not_found()
+
         values = {
-            'categories': public_categs,
+            'property': property_rec,
         }
-        return values
-
-    @http.route('/get_property_details', auth="public", type='http', website=True)
-    def get_property_details(self, **post):
-        image = post.get('start')
-        property_details = request.env['property.details'].read(['name'])
-
-        return property_details
-        # pass
+        return request.render('property_management.property_info_template', values)

@@ -8,6 +8,7 @@
                         Please save to view the snippet
                     </h4>
                 </div>
+                <div id="top_products_carousel" />
             </div>
         </section>
     </template>

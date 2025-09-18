@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="Property_1" model="property.details">
-        <field name="name">Residency</field>
-        <field name="street">Street 1</field>
-        <field name="city">City 1</field>
-        <field name="state_id" model="res.country.state" search="[('code','=','NY')]"/>
-        <field name="country_id" ref="base.us"/>
-        <field name="property_image" type="base64"
-               file="/home/cybrosys/odoo18/Clust addons/property_management/static/image/Villa.jpeg"/>
-        <field name="facilities_ids" eval="[(6, 0, [ref('facility_1'),ref('facility_2')])]"/>
-        <field name="legal_amount">1000</field>
-        <field name="built_date">2010-01-01</field>
-        <field name="rent">150</field>
+    <field name="name">Residency</field>
+    <field name="street">Street 1</field>
+    <field name="city">City 1</field>
+    <field name="state_id" model="res.country.state" search="[('code','=','NY')]"/>
+    <field name="country_id" ref="base.us"/>
+    <field name="property_image" type="base64"
+           file="property_management/static/image/Villa.jpeg"/>
+    <field name="facilities_ids" eval="[(6, 0, [ref('facility_1'),ref('facility_2')])]"/>
+    <field name="legal_amount">1000</field>
+    <field name="built_date">2010-01-01</field>
+    <field name="rent">150</field>
+    <field name="owner_id" ref="base.main_partner"/>
     </record>
+
     <record id="Property_2" model="property.details">
         <field name="name">Villa</field>
         <field name="street">Street 2</field>
@@ -24,6 +26,7 @@
         <field name="built_date">2025-01-01</field>
         <field name="legal_amount">10000</field>
         <field name="rent">160</field>
+        <field name="owner_id" ref="base.main_partner"/>
     </record>
     <record id="Property_3" model="property.details">
         <field name="name">House A</field>
@@ -36,6 +39,7 @@
         <field name="built_date">2025-01-01</field>
         <field name="legal_amount">100000</field>
         <field name="rent">1500</field>
+        <field name="owner_id" ref="base.main_partner"/>
     </record>
     <record id="Property_4" model="property.details">
         <field name="name">House B</field>
@@ -48,5 +52,6 @@
         <field name="built_date">2025-01-01</field>
         <field name="legal_amount">200000</field>
         <field name="rent">2500</field>
+        <field name="owner_id" ref="base.main_partner"/>
     </record>
 </odoo>
