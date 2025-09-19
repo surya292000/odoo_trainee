@@ -1,52 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="property_management.category_data">
-        <section class="categories_section">
-        <div class="container">
-        <div id="TopuniqueId" class="large-12 columns">
-        <div id="bestSellCarousel" class="owl-carousel owl-theme owl-loaded owl-drag">
-        <h3 class="section_heading">Shop by Categories</h3>
-            <div class="categories_wrapper">
-            <div class="owl-stage-outer">
-
-                <t t-foreach="result.categories" t-as="category" t-key="category.id">
-<!--                    <div class="row">-->
-                    <div class="row">
-                    <div class="categories">
-                        <div class="img_wrapper">
-                                <t t-if="category.property_image">
-                                    <a class="o_carousel_product_img_link o_dynamic_product_hovered stretched-link"
-                                           t-attf-href="/property/details/#{category.id}">
-                                        <img class="card-img-top o_img_product_square o_img_product_cover h-auto"
-                                             t-att-src="'data:image/png;base64,' + category.property_image"
-                                             style="width:200px; height:200px; object-fit:cover; border-radius:8px;"
-                                             t-att-alt="category.name or 'Category Image'"
-                                             loading="lazy"/>
-                                    </a>
-                                </t>
-
-                                <t t-else="">
-                                    <img src="property_management/static/image/Home.jpg"
-                                         style="width:200px; height:200px; object-fit:cover; border-radius:8px;"
-                                         class="rotate-center"
-                                         alt="Default Property Image"
-                                         loading="lazy"/>
-                                </t>
+        <section class="categories_section py-5">
+            <div class="container">
+<!--                <h3 class="section_heading text-center mb-5">Shop by Categories</h3>-->
+                <div t-attf-id="carousel{{ uniqueId }}" class="container carousel slide" data-bs-ride="carousel"
+                     t-att-data-bs-interval="interval">
+                    <div class="carousel-inner row w-100 mx-auto" role="listbox">
+                        <t t-foreach="category_chunks" t-as="chunk" t-key="chunk.id">
+                            <div t-att-class="chunk.is_active ? 'carousel-item active' : 'carousel-item'">
+                                <div class="row">
+                                    <t t-foreach="chunk" t-as="category" t-key="category.id">
+                                        <div class="block span3 col-3">
+                                            <div class="card-group">
+                                                <div class="card" style="border:1px solid #f4f4f4;">
+                                                    <a t-attf-href="/property/details/{{ category.id }}"
+                                                       class="text-decoration-none text-dark">
+                                                        <div class="card shadow-sm rounded h-100">
+                                                            <div class="img_wrapper position-relative text-center p-3">
+                                                                <t t-if="category.property_image">
+                                                                    <img t-att-src="'data:image/png;base64,' + category.property_image"
+                                                                         class="img-fluid rounded category-image"
+                                                                         t-att-alt="category.name or 'Category Image'"
+                                                                         loading="lazy"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <img src="/property_management/static/image/Home.jpg"
+                                                                         class="img-fluid rounded category-image"
+                                                                         alt="Default Category Image"
+                                                                         loading="lazy"/>
+                                                                </t>
+                                                            </div>
+<!--                                                            <div class="card-body">-->
+                                                                  <p style="text-align:center;">
+                                                                      <strong><t t-esc="category.name"/></strong>
+                                                                  </p>
+<!--                                                            </div>-->
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
                             </div>
-                        <div class="type">
-                            <t t-esc="category.name"/>
-                        </div>
-
-                        </div>
-                        </div>
-<!--                    </div>-->
-                </t>
+                        </t>
+                    </div>
                 </div>
-        </div>
-        </div>
-        </div>
-        </div>
-<!--        </div>-->
+                <a t-attf-href="#carousel{{ uniqueId }}" class="carousel-control-prev" data-bs-slide="prev"
+                   role="button"
+                   aria-label="Previous" title="Previous">
+                    <span class="fa fa-chevron-circle-left fa-2x" style="color:grey;"/>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a t-attf-href="#carousel{{ uniqueId }}" class="carousel-control-next" data-bs-slide="next"
+                   role="button"
+                   aria-label="Next" title="Next">
+                    <span class="fa fa-chevron-circle-right fa-2x" style="color:grey;"/>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div>
         </section>
-        </t>
-        </templates>
+    </t>
+</templates>
