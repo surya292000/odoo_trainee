@@ -6,7 +6,7 @@
              "views/pos_menu.xml",
     ],
 'assets': {
-    'web.assets_frontend': [
+    "point_of_sale._assets_pos": [
         "pos/static/src/js/order_lines.js",
         "pos/static/src/js/product_owner.js",
         "pos/static/src/xml/order_line.xml",

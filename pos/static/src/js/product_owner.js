@@ -1,10 +1,17 @@
-/** @odoo-module */
-import {patch} from "@web/core/utils/patch";
-import {PosStore} from "@point_of_sale/app/store/pos_store";
+/** @odoo-module **/
+import { PosOrderline } from "@point_of_sale/app/models/pos_order_line";
+import { patch } from "@web/core/utils/patch";
 
-patch(PosStore.prototype, {
-    async _processData(loadData) {
-        await super._processData(...arguments);
-        this.product_temp = loadedData['product.product'];
-        }
-    });
+patch(PosOrderline.prototype, {
+    setup() {
+        super.setup(...arguments);
+        this.product_owner_id = this.product?.product_owner_id || false;
+        console.log('Product Owner:', this.product_owner_id);
+    },
+
+    getDisplayData() {
+        const data = super.getDisplayData(...arguments);
+        data.product_owner_id = this.product_owner_id || "";
+        return data;
+    },
+});
