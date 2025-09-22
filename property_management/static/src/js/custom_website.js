@@ -283,9 +283,9 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                    selected_value.value = "";
                    const chRow = selected_value.closest('tr');
                    if (chRow) {
-                       const o = chRow.querySelector('.owner'); if (o) o.textContent = "";
-                       const a = chRow.querySelector('.amount'); if (a) a.textContent = "";
-                       const s = chRow.querySelector('.sub_amount'); if (s) s.textContent = "";
+                       const own = chRow.querySelector('.owner'); if (own) own.textContent = "";
+                       const amo = chRow.querySelector('.amount'); if (amo) amo.textContent = "";
+                       const sub_amo = chRow.querySelector('.sub_amount'); if (sub_amo) sub_amo.textContent = "";
                    }
                }
            }

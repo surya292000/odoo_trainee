@@ -3,9 +3,7 @@
     <t t-name="Orderline" t-inherit="point_of_sale.Orderline"
        t-inherit-mode="extension">
         <xpath expr="//li[hasclass('orderline')]//ul[hasclass('info-list')]" position="inside">
-            <span>jyfyfyfhthft</span>
             <li class="product-owner">
-                <t t-log="'fhgjhj;', line"/>
                 <t t-if="line.product_owner_id">
                     <b>Product Owner:</b>
                     <t t-esc="line.product_owner_id"/>

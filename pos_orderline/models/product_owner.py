@@ -10,7 +10,7 @@ class ProductOwner(models.Model):
 class ProductOwnerPos(models.Model):
     _inherit = 'product.product'
 
-    def _loader_params_product_product_product(self, config_id):
+    def _load_pos_data_fields(self, config_id):
         result = super()._load_pos_data_fields(config_id)
         result += ['product_owner_id']
         return result

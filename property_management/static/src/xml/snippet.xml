@@ -3,7 +3,6 @@
     <t t-name="property_management.category_data">
         <section class="categories_section py-5">
             <div class="container">
-<!--                <h3 class="section_heading text-center mb-5">Shop by Categories</h3>-->
                 <div t-attf-id="carousel{{ uniqueId }}" class="container carousel slide" data-bs-ride="carousel"
                      t-att-data-bs-interval="interval">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
@@ -31,11 +30,9 @@
                                                                          loading="lazy"/>
                                                                 </t>
                                                             </div>
-<!--                                                            <div class="card-body">-->
                                                                   <p style="text-align:center;">
                                                                       <strong><t t-esc="category.name"/></strong>
                                                                   </p>
-<!--                                                            </div>-->
                                                         </div>
                                                     </a>
                                                 </div>

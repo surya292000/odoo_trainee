@@ -5,8 +5,7 @@ import { patch } from "@web/core/utils/patch";
 patch(PosOrderline.prototype, {
     setup() {
         super.setup(...arguments);
-        this.product_owner_id = this.product?.product_owner_id || false;
-        console.log('Product Owner:', this.product_owner_id);
+        this.product_owner_id = this.product_id.product_owner_id?.name || false;
     },
 
     getDisplayData() {
