@@ -34,14 +34,6 @@ class WebFormController(http.Controller):
             'searchbar_inputs': searchbar_inputs,
         })
 
-    @http.route('/my/record/invoice', type='http', auth='user', website=True)
-    def display_order_form(self, **kwargs):
-        partner = request.env.user.partner_id
-
-        pass
-
-
-
     @http.route('/webform', type='http', auth='user', website=True)
     def display_web_form(self, **kwargs):
         properties = request.env['property.details'].sudo().search([])
