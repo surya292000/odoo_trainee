@@ -7,7 +7,6 @@
         <field name="inherit_id" ref="point_of_sale.product_pos_category_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='parent_id']" position="after">
-                <field name="currency_id" invisible="1"/>
                 <field name="discount_limit"
                        invisible="is_enable_category_wise_discount == False"/>
             </xpath>

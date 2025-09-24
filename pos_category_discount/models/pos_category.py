@@ -9,12 +9,6 @@ class PosCategory(models.Model):
     """Inheriting pos category for adding discount limit feature"""
     _inherit = "pos.category"
 
-    currency_id = fields.Many2one(
-        comodel_name='res.currency',
-        string='Currency',
-        default=lambda self: self.env.company.currency_id,
-        readonly=True,
-        help='Currency for the machine value.')
     is_enable_category_wise_discount = fields.Boolean(default=False)
     discount_limit = fields.Float(string='Maximum Discount Limit')
 
@@ -31,4 +25,3 @@ class PosCategory(models.Model):
         result = super()._load_pos_data_fields(config_id)
         result += ['discount_limit', 'is_enable_category_wise_discount']
         return result
-

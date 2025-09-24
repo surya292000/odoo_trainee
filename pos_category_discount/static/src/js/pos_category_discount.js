@@ -12,20 +12,16 @@ patch(PosStore.prototype, {
     const categDiscount = {}
     console.log(order_lines,'order lines')
 
+
     for (const line of order_lines) {
          if (line.discount){
-         const price = line.price_subtotal;
-         console.log(price,'price')
+         const price = line.price_unit * line.qty;
          const discountPercent = line.discount;
-         console.log(discountPercent,'discount percent')
-         const discountAmount = (price * discountPercent) / 100;
-         console.log(discountAmount, 'discount amount')
+         const discountAmount = price * (discountPercent/ 100);
          if (line.product_id.pos_categ_ids && line.product_id.pos_categ_ids.length > 0) {
             const category = line.product_id.pos_categ_ids[0];
             const categoryName = category.name
             const discountLimit = category.discount_limit
-            console.log(discountLimit,'limit');
-            console.log(categoryName,'category name')
 
              if (categDiscount[categoryName]) {
                 categDiscount[categoryName] += discountAmount;
