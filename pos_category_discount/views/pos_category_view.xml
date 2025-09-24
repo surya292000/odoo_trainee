@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    inherit pos category form to add a discount limit-->
+    <record id="pos_category_view_form" model="ir.ui.view">
+        <field name="name">pos.category.inherit.view.form</field>
+        <field name="model">pos.category</field>
+        <field name="inherit_id" ref="point_of_sale.product_pos_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="currency_id" invisible="1"/>
+                <field name="discount_limit"
+                       invisible="is_enable_category_wise_discount == False"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

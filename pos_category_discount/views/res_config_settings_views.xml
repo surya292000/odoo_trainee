@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define a view to extend POS configuration settings with new options -->
+    <record id="view_pos_configuration_form" model="ir.ui.view">
+        <field name="name">pos.config.view.form.inherit.pos.categ.discount</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='orderlines_seq_cart']" position="after">
+                <setting id="pos_categ_wise_discount"
+                         string="Category discount limit"
+                         help="Used to enable setting category wise
+                         discount in POS Category">
+                    <field name="enable_category_wise_discount"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

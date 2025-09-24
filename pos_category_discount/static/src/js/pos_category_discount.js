@@ -7,24 +7,48 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 patch(PosStore.prototype, {
     async pay() {
-        const currentOrder = this.get_order();
-        for (const line of currentOrder.get_orderlines()) {
-            const product = line.get_product();
-            const category = product.pos_categ_id; // single category of the product
-            if (category && category.maximum_discount && category.maximum_discount > 0) {
-                const discount = line.get_discount();
-                if (discount > category.maximum_discount) {
-                    await this.dialog.add(AlertDialog, {
+    const order = this.get_order()
+    const order_lines = order.lines
+    const categDiscount = {}
+    console.log(order_lines,'order lines')
+
+    for (const line of order_lines) {
+         if (line.discount){
+         const price = line.price_subtotal;
+         console.log(price,'price')
+         const discountPercent = line.discount;
+         console.log(discountPercent,'discount percent')
+         const discountAmount = (price * discountPercent) / 100;
+         console.log(discountAmount, 'discount amount')
+         if (line.product_id.pos_categ_ids && line.product_id.pos_categ_ids.length > 0) {
+            const category = line.product_id.pos_categ_ids[0];
+            const categoryName = category.name
+            const discountLimit = category.discount_limit
+            console.log(discountLimit,'limit');
+            console.log(categoryName,'category name')
+
+             if (categDiscount[categoryName]) {
+                categDiscount[categoryName] += discountAmount;
+            } else {
+                categDiscount[categoryName] = discountAmount;
+            }
+
+             if (categDiscount[categoryName] > discountLimit) {
+                    console.log("ALERT:", categoryName, "discount exceeded!");
+                       await this.dialog.add(AlertDialog, {
                         title: _t("Discount Limit Exceeded"),
-//                        body: _t(
-//                            The discount on product "${product.display_name}" cannot exceed ${category.maximum_discount}%
-//                        ),
+                        body: _t(
+                            "The discount on product cannot exceed discount limit set inside category"
+                        ),
                     });
                     return false;
                 }
-            }
+
         }
+         }
+}
+console.log(categDiscount,'DiscountMap')
+
         return super.pay();
     }
 });
-
