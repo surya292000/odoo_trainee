@@ -27,7 +27,6 @@ class PropertyDetails(models.Model):
     property_rental_lease_id = fields.Many2one("property.rental.lease", string="state of rent or lease")
 
     def _compute_rent_count(self):
-        print('_compute_rent_count')
         for record in self:
             record.rent_count = self.env['property.rental.lease'].search_count(
                 [('property_ids.property_id', '=', self.id)])

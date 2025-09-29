@@ -6,7 +6,6 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
     selector: "#wrap",
     events: {
-        "change .operation": "_onChangeType",
         "change #start_date": "_onChangeDates",
         "change #end_date": "_onChangeDates",
         "click .add_total_project": "_onClickAddMaterial",
@@ -229,7 +228,6 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
     onChangeProperty(ev) {
         const $selected = $(ev.target);
         const selectedValue = $selected.val();
-
         this.$el.find("#material_table tbody tr.property_order_line").each((_, elem) => {
             const $row = $(elem);
             if ($row[0] === $selected.closest("tr")[0] || $row.hasClass("d-none")) return;
@@ -240,9 +238,5 @@ publicWidget.registry.PropertyRentalLease = publicWidget.Widget.extend({
                 $selected.closest("tr").find(".owner, .amount, .sub_amount").text("");
             }
         });
-    },
-
-    _onChangeType() {
-        console.log("Property type changed");
     },
 });

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import fields, models
 
 # from odoo.addons.payment_multisafepay import const
@@ -12,7 +13,7 @@ class PaymentProvider(models.Model):
     multisafepay_api_key = fields.Char(
         string="Multisafepay API Key",
         help="The Test or Live API Key depending on the configuration of the provider",
-        required_if_provider="multisafepay", groups="base.group_system"
+        required_if_provider="Multisafepay", groups="base.group_system"
     )
 
     def _get_default_payment_method_codes(self):

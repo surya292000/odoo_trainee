@@ -24,8 +24,6 @@ class WebFormController(http.Controller):
         domain = [('tenant_id', '=', request.env.user.partner_id.id)] + search_domain
 
         properties = request.env['property.rental.lease'].search(domain)
-        print(properties,'properties')
-
         return request.render('property_management.property_record_list_view', {
             'property': properties,
             'page_name': 'property',

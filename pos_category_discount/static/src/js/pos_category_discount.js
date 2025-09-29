@@ -10,9 +10,6 @@ patch(PosStore.prototype, {
     const order = this.get_order()
     const order_lines = order.lines
     const categDiscount = {}
-    console.log(order_lines,'order lines')
-
-
     for (const line of order_lines) {
          if (line.discount){
          const price = line.price_unit * line.qty;
@@ -22,13 +19,11 @@ patch(PosStore.prototype, {
             const category = line.product_id.pos_categ_ids[0];
             const categoryName = category.name
             const discountLimit = category.discount_limit
-
              if (categDiscount[categoryName]) {
                 categDiscount[categoryName] += discountAmount;
             } else {
                 categDiscount[categoryName] = discountAmount;
             }
-
              if (categDiscount[categoryName] > discountLimit) {
                     console.log("ALERT:", categoryName, "discount exceeded!");
                        await this.dialog.add(AlertDialog, {
@@ -39,12 +34,9 @@ patch(PosStore.prototype, {
                     });
                     return false;
                 }
-
         }
          }
 }
-console.log(categDiscount,'DiscountMap')
-
         return super.pay();
     }
 });
