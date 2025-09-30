@@ -1,42 +1,49 @@
 # -*- coding: utf-8 -*-
 import logging
-import pprint
+# import pprint
 
-from werkzeug import urls
+# from werkzeug import urls
 
-from odoo import _, models
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 
+import requests
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
     def _get_specific_rendering_values(self, processing_values):
-        """ Override of payment to return Mollie-specific rendering values.
 
-        Note: self.ensure_one() from `_get_processing_values`
+        url = "https://testapi.multisafepay.com/v1/json/orders?api_key=8acfb15b1f60d7634e7d1c9edfc5a3d20264fc98"
 
-        :param dict processing_values: The generic and specific processing values of the transaction
-        :return: The dict of provider-specific rendering values
-        :rtype: dict
-        """
-        res = super()._get_specific_rendering_values(processing_values)
-        if self.provider_code != 'mollie':
-            return res
+        payload = {
+            "payment_options": {
+                "close_window": False,
+                "notification_method": "POST",
+                "notification_url": "https://www.example.com/webhooks/payment",
+                "redirect_url": "https://www.example.com/order/success",
+                "cancel_url": "https://www.example.com/order/failed"
+            },
+            "customer": {
+                "locale": "en_US",
+                "disable_send_email": False
+            },
+            "checkout_options": {"validate_cart": False},
+            "days_active": 30,
+            "seconds_active": 2592000,
+            "type": "redirect",
+            "gateway": "APPLEPAY",
+            "order_id": "my-order-id-1",
+            "currency": "EUR",
+            "amount": 100,
+            "description": "Test Order Description"
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json"
+        }
 
-        payload = self._mollie_prepare_payment_request_payload()
-        _logger.info("sending '/payments' request for link creation:\n%s", pprint.pformat(payload))
-        payment_data = self.provider_id._mollie_make_request('/payments', data=payload)
-
-        # The provider reference is set now to allow fetching the payment status after redirection
-        self.provider_reference = payment_data.get('id')
-
-        # Extract the checkout URL from the payment data and add it with its query parameters to the
-        # rendering values. Passing the query parameters separately is necessary to prevent them
-        # from being stripped off when redirecting the user to the checkout URL, which can happen
-        # when only one payment method is enabled on Mollie and query parameters are provided.
-        checkout_url = payment_data['_links']['checkout']['href']
-        parsed_url = urls.url_parse(checkout_url)
-        url_params = urls.url_decode(parsed_url.query)
-        return {'api_url': checkout_url, 'url_params': url_params}
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.text)
+        return {'api_url': payment_url}
