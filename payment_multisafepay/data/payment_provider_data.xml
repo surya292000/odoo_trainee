@@ -14,6 +14,7 @@
         <field name="redirect_form_view_id" ref="redirect_form"/>
 <!--        <field name="state">test</field>-->
         <field name="image_128" type="base64" file="payment_multisafepay/static/image/multisafepay.png"/>
+        <field name="module_id" ref="base.module_payment_multisafepay"/>
 <!--        <field name="is_published">True</field>-->
 <!--        <field name="inline_form_view_id" ref="inline_form"/>-->
 <!--        <field name="token_inline_form_view_id" ref="token_inline_form"/>-->
