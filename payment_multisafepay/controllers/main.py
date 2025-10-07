@@ -14,9 +14,6 @@ class MultiSafePayController(http.Controller):
                 save_session=False
                 )
     def _multisafepay_return_from_checkout(self,**data):
-        print(data,'DATA')
         _logger.info("handling redirection from multisafepay with data:\n%s", pprint.pformat(data))
         request.env['payment.transaction'].sudo()._handle_notification_data('multisafepay', data)
         return request.redirect('/payment/status')
-
-

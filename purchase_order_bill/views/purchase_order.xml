@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="view_move_form_inherit_purchase_order" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.purchase.order</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_create_purchase_order" string="Create Purchase Order" type="object"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
