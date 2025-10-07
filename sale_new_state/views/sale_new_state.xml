@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_order_form_open_close" model="ir.ui.view">
+        <field name="name">sale.order.form.open.close</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <header position="inside">
+                <field name="new_state" widget="statusbar" readonly="0"
+                       statusbar_visible="open,close"
+                       statusbar_status="open_close_state" options="{'clickable': '1'}"/>
+            </header>
+        </field>
+    </record>
+</odoo>

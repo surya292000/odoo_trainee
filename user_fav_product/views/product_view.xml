@@ -1,32 +1,52 @@
 <odoo>
-    <!-- Add Favourite toggle in Product Form -->
     <record id="view_product_template_form_favourite" model="ir.ui.view">
         <field name="name">product.template.form.favourite</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <field name="product_tooltip" position="after">
-                <field name="is_favourite" widget="boolean_toggle"/>
+                <field name="is_favourite"<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_my_selection" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.my.selection</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/> <!-- Inherit the sales order form view -->
+        <field name="arch" type="xml">
+            <!-- Add your field after an existing field or in a desired position -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="my_selection_field"/>
+            </xpath>
+        </field>
+    </record>
+</odoo><?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_my_selection" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.my.selection</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/> <!-- Inherit the sales order form view -->
+        <field name="arch" type="xml">
+            <!-- Add your field after an existing field or in a desired position -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="my_selection_field"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>/>
             </field>
         </field>
     </record>
 
-    <!-- Add 'My Favourites' filter in Product search view -->
     <record id="view_product_template_search_favourite" model="ir.ui.view">
         <field name="name">product.template.search.favourite</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_search_view"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <filter name="favourite"
-                        string="My Favourites"
-                        domain="[('favourite_user_ids', 'in', [uid])]"
-                        help="Show only my favourite products"/>
+                <filter name="favourite" string="My Favourites" domain="[('favourite_user_ids', '=', [uid])]"/>
             </xpath>
         </field>
     </record>
 
-    <!-- Override original Product action to set default filter -->
     <record id="product.product_template_action" model="ir.actions.act_window">
         <field name="context">{'search_default_favourite': 1}</field>
     </record>
