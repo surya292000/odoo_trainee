@@ -9,34 +9,30 @@ class ResPartner(models.Model):
 
     def action_recalculate_products(self):
         partner = self.id
+        threshold_qty = self.threshold
         print(partner, 'partner')
-        sale_order = self.env['sale.order'].search(['partner_id.id'])
-        print()
+        sale_orders = self.env['sale.order'].search([('partner_id', '=', partner)])
+        print(sale_orders, 'sale order')
 
-        # sale_order = self.env['sale.order'].search(['partner_id.id'])
-        # print(sale_order, 'sale order')
-        # for order in sale_order:
-        #     print(order, 'order')
-        #     if order.partner_id == partner:
-        #         print(order.order_line, 'order lines')
+        products = []
+        for line in sale_orders.mapped('order_line'):
+            if line.product_uom_qty >= threshold_qty:
+                products.append(line.product_id.id)
 
-        # for partner in self:
-        #     if partner.threshold <= 0:
-        #         continue
-        #     sale_orders = self.env['sale.order'].search([
-        #         ('partner_id', '=', partner.id),
-        #         ('state', 'in', ['sale', 'done'])
-        #     ])
+        print(products, 'eligible product ids')
+        self.product_ids = products
+
+
+        # product_id = sale_orders.order_line.mapped('product_template_id')
+        # print(product_id, 'product id')
+        # for pro in product_id:
+        #     qty_ordered = sale_orders.order_line.mapped('product_template_id')
+        #     # qty_ordered = sale_orders.order_line.mapped('product_uom_qty')
+        #     print(qty_ordered, 'qty_ordered')
+        #     for order in qty_ordered:
+        #         if order >= threshold_qty:
         #
-        #     # Gather products whose ordered quantity ≥ threshold
-        #     product_ids = set()
-        #     for order in sale_orders:
-        #         for line in order.order_line:
-        #             if line.product_id and line.product_uom_qty >= partner.threshold:
-        #                 product_ids.add(line.product_id.id)
-        #
-        #     # Update the many2many field with those products
-        #     partner.product_ids = [(6, 0, list(product_ids))]
+        #             print('greater')
 
     def action_create_so(self):
         SaleOrder = self.env['sale.order']
