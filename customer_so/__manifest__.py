@@ -1,8 +1,10 @@
 {
-    'name': 'Customer Sale Order',
-    'depends':['sale'],
+    'name': 'Partner Product Threshold',
+    'depends': ['base', 'sale_management'],
     'data': [
-        'views/customer.xml',
-        # 'views/res.config.xml',
+        'views/res_partner.xml',
     ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
 }

@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_partner_form_inherit_threshold" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.threshold</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="before">
+                <header>
+                    <button name="action_recalculate_products"
+                            string="Recalculate"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_create_so"
+                            string="Create SO"
+                            type="object"
+                            class="btn-secondary"/>
+                </header>
+            </xpath>
+            <field name="vat" position="after">
+                <field name="threshold"/>
+                <field name="product_ids" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+</odoo>
