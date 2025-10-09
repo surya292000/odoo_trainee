@@ -23,7 +23,6 @@
         </field>
     </record>
 
-    <!-- Action to open wizard -->
     <record id="action_sale_order_from_lines_wizard" model="ir.actions.act_window">
         <field name="name">Create Sale Order</field>
         <field name="res_model">sale.order.from.lines.wizard</field>

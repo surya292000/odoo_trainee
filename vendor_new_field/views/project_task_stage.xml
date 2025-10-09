@@ -1,0 +1,12 @@
+<odoo>
+    <record id="project_task_type_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.type.form.inherit</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit"/>
+        <field name="arch" type="xml">
+            <field name="project_ids" position="after">
+                <field name="default_duration_days"/>
+            </field>
+        </field>
+    </record>
+</odoo>
