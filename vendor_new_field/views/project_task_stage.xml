@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <field name="project_ids" position="after">
                 <field name="default_duration_days"/>
+                <field name="is_complete"/>
             </field>
         </field>
     </record>

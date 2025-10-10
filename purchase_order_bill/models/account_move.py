@@ -19,7 +19,8 @@ class AccountMove(models.Model):
             }) for line in bill_lines if line.product_id],
         })
         if purchase_order:
-            pass
+            print(purchase_order, 'hhhhhhh')
+            print(purchase_order.invoice_ids, 'jjjjjjjjj')
         return {
             'type': 'ir.actions.act_window',
             'name': 'Purchase Order',
