@@ -4,31 +4,48 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    customer_top_lines_ids = fields.One2many('account.move.line','move_id',
-        string='Customer Top Invoice Lines')
+    customer_top_lines_ids = fields.Many2many('account.move.line',string='Customer Top 20 Invoice Lines',
+        compute='_compute_customer_top_lines',store=False)
 
-    @api.depends('partner_id')
+    @api.depends('partner_id', 'invoice_line_ids')
     def _compute_customer_top_lines(self):
-        print('heyyyyyy')
+        MoveLine = self.env['account.move.line']
         for move in self:
-            invoice_lines = self.env['account.move.line'].search([('product_id')
-                # ('move_id.move_type', 'in', ('out_invoice', 'out_refund')),
-                ('move_id', '=', self.id),
-                # ('move_id.partner_id', '=', move.partner_id.id),
-                # ('move_id.state', '=', 'posted'),
-                # ('product_id', '!=', False),
-            ], order='price_unit desc')
-            print('helooooooo')
-            print(invoice_lines, 'invoice lines')
+            if not move.partner_id:
+                move.customer_top_lines_ids = False
+                continue
 
-            # unique_lines = {}
-            # for line in invoice_lines:
-            #     if line.product_id.id not in unique_lines:
-            #         unique_lines[line.product_id.id] = line
-            #     if len(unique_lines) >= 20:
-            #         break
-            #
-            self.customer_top_lines_ids = invoice_lines
+            invoice_lines = MoveLine.search([
+                ('move_id.move_type', 'in', ('out_invoice', 'out_refund')),
+                ('move_id.partner_id', '=', move.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('product_id', '!=', False),
+                ('price_unit', '>', 0),
+            ], order='price_unit desc', limit=20)
 
-    def button_to_add_invoice_lines(self):
-        pass
+            existing_products = move.invoice_line_ids.mapped('product_id').ids
+            filtered_lines = invoice_lines.filtered(lambda l: l.product_id.id not in existing_products)
+
+            move.customer_top_lines_ids = filtered_lines
+
+    def action_add_all_top_lines(self):
+        """Add all 20 top lines to the current draft invoice and remove from the list."""
+        self.ensure_one()
+
+        # if self.state != 'draft':
+        #     raise ValueError("You can only add lines to a draft invoice.")
+
+        new_lines = []
+        for top_line in self.customer_top_lines_ids:
+            new_lines.append((0, 0, {
+                'product_id': top_line.product_id.id,
+                'name': top_line.name or top_line.product_id.display_name,
+                'quantity': top_line.quantity,
+                'price_unit': top_line.price_unit,
+                'tax_ids': [(6, 0, top_line.tax_ids.ids)],
+            }))
+
+        self.write({'invoice_line_ids': new_lines})
+        self._compute_customer_top_lines()
+
+        return {'type': 'ir.actions.client', 'tag': 'reload'}

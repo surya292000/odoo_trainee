@@ -10,7 +10,7 @@ class PurchaseOrder(models.Model):
         for order in self:
             if order.invoice_status == 'to invoice':
                 bill = self.env['account.move'].create({
-                    'move_type': 'in_invoice',  # Specifies that it is a vendor bill
+                    'move_type': 'in_invoice',
                     'partner_id': order.partner_id.id,
                     'purchase_id': order.id,
                     'invoice_date': fields.Date.today(),
