@@ -1,0 +1,14 @@
+<odoo>
+    <record id="promo_5_percent_website" model="coupon.program">
+        <field name="name">5% Discount for Website Orders</field>
+        <field name="program_type">promotion_program</field>
+        <field name="active" eval="True"/>
+        <field name="promo_code_usage">no_code_needed</field>
+        <field name="rule_min_quantity" eval="1"/>
+        <field name="discount_type">percentage</field>
+        <field name="discount_percentage" eval="5"/>
+        <field name="reward_type">discount</field>
+        <field name="discount_apply_on">on_order</field>
+        <field name="applies_on">sale_order</field>
+    </record>
+</odoo>

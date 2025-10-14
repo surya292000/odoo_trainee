@@ -18,8 +18,6 @@ class AccountMove(models.Model):
                 'product_uom': line.product_uom_id.id,
             }) for line in bill_lines if line.product_id],
         })
-        if purchase_order:
-            pass
         return {
             'type': 'ir.actions.act_window',
             'name': 'Purchase Order',
