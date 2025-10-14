@@ -11,4 +11,3 @@ class StockPicking(models.Model):
                 self.location_dest_id = self.env.ref('product_destination_location.location_1')
             elif (product.product_id.weight * product.product_uom_qty) > 20:
                 self.location_dest_id = self.env.ref('product_destination_location.location_1')
-

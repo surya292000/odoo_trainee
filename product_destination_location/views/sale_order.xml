@@ -4,9 +4,16 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="before">
+                <header>
+                    <button name="button_to_create_task" string="Create Tasks" type="object" class="btn-primary"
+                            invisible="state != 'sale' or project_id == False or is_empty_task == True"/>
+                </header>
+            </xpath>
             <field name="validity_date" position="after">
-           <field name="project_id"/>
-       </field>
+                <field name="project_id" domain="[('partner_id', '=', partner_id)]"/>
+                <field name="is_empty_task"/>
+            </field>
         </field>
     </record>
 </odoo>
