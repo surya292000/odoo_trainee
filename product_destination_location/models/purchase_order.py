@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
