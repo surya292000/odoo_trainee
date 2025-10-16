@@ -1,8 +1,7 @@
 {
-    'name':'Product Creation',
+    'name': 'Product Creation',
     'depends': ['product'],
     'data': [
-        # 'views/product_product.xml',
-        'wizard/product_request_wizard.xml',
+        'views/product_template.xml',
     ],
 }
