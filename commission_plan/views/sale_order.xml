@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_custom_tab_sale_order_form_view" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.custom.tab</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Custom Product Details">
+<!--                    <field name="customer_top_lines_ids" readonly="1"-->
+<!--                    context="{'active_id': id}">-->
+<!--                        <list>-->
+<!--                        <field name="product_id"/>-->
+<!--                        <field name="quantity"/>-->
+<!--                        <field name="price_unit"/>-->
+<!--                        <field name="price_subtotal"/>-->
+<!--                        </list>-->
+<!--                    </field>-->
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
