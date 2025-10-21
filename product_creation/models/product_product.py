@@ -8,12 +8,12 @@ class ProductProduct(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        record = super().create(vals_list)
         if not self.env.user.has_group('product_creation.group_erp_manager'):
-            record.active = False
-            record.is_new_product = True
-        return record
+            for vals in vals_list:
+                vals['active'] = False
+                vals['is_new_product'] = True
+        return super().create(vals_list)
 
     def action_to_approve(self):
-        self.active = True
-        self.is_new_product = False
+        self.write({'active': 1, 'is_new_product': 0})
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_button_wizard_form_view" model="ir.ui.view">
+        <field name="name">product.button.wizard.form.view</field>
+        <field name="model">product.button.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Rent/Lease Report">
+                <group>
+                     <field name="quantity"/>
+                    <field name="price"/>
+                </group>
+                <footer>
+                    <button string="Submit" type="object" name="action_confirm_po" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_button_wizard" model="ir.actions.act_window">
+        <field name="name">Product Wizard</field>
+        <field name="res_model">product.button.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_button_wizard_form_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

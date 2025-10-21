@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_line_view_list" model="ir.ui.view">
+        <field name="name">product.line.view.list</field>
+        <field name="model">product.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="crm_commission_id"/>
+                <field name="product_id"/>
+                <field name="straight_commission"/>
+                <field name="product_commission"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="product_line_view_form" model="ir.ui.view">
+        <field name="name">product.line.view.form</field>
+        <field name="model">product.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="crm_commission_id"/>
+                <field name="product_id" invisible="commission_type == '"/>
+                <field name="straight_commission"/>
+                <field name="product_commission"/>
+                <field name="commission_type"/>
+            </form>
+        </field>
+    </record>
+</odoo>
