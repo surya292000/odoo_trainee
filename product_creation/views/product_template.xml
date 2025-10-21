@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_product_inherit_new_button" model="ir.ui.view">
+        <field name="name">product.product.form.view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="before">
+                <header>
+                    <button name="action_to_approve" string="Approve" type="object" class="btn-primary"
+                            groups = "base.group_erp_manager" invisible="active == True"/>
+                </header>
+            </xpath>
+            <field name="product_tooltip" position="after">
+                <field name="is_new_product" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="product_product_search_view_inherited" model="ir.ui.view">
+        <field name="name">product.product.search.inherited</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <filter string="Products for Approval" name="products_for_approval"
+                        domain="[('is_new_product', '!=', 0), ('active', '=', 0)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

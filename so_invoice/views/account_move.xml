@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_move_form_related_so" model="ir.ui.view">
+        <field name="name">account.move.form.related.so</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_shipping_id" position="after">
+                <field name="related_so_ids" widget="many2many_tags"
+                       domain="[('partner_id', '=', partner_id), ('invoice_status', '!=', 'invoiced')]"/>
+        </field>
+        </field>
+    </record>
+</odoo>
