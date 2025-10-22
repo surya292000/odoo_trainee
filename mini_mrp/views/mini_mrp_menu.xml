@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="mini_mrp"
+              name="Mini Mrp"
+              sequence="25"/>
+
+    <menuitem id="mini_mrp_details"
+              name="Mini Manufacture"
+              parent="mini_mrp"
+              action="mini_mrp.action_mini_mrp_view_form"
+              sequence="1"/>
+</odoo>

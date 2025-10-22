@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mini_mrp_line_view_list" model="ir.ui.view">
+        <field name="name">mini.mrp.line.view.list</field>
+        <field name="model">mini.mrp.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="product"/>
+                <field name="qty_product"/>
+<!--                <field name="location_id"/>-->
+            </list>
+        </field>
+    </record>
+    <record id="mini_mrp_line_view_form" model="ir.ui.view">
+        <field name="name">mini.mrp.line.view.form</field>
+        <field name="model">mini.mrp.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="product"/>
+                <field name="qty_product"/>
+<!--                <field name="location_id"/>-->
+            </list>
+        </field>
+    </record>
+
+</odoo>
